@@ -43,18 +43,22 @@ public class Lab2 {
 		System.out.print("Please enter the file name: ");
 		txtFile = new File(input.nextLine());
 		input = new Scanner(txtFile);
-		Map<String, Integer> result = new HashMap<String, Integer>();
-		int a = 1;
+		Map<String, Integer> nextWordFrq = new HashMap<String, Integer>();
 		
 		while(input.hasNext()){
 			String word = input.next();
-			if (wordFrq.containsKey(word)){
-				int num = wordFrq.get(word);
-				wordFrq.put(word, num+1);
+			if (nextWordFrq.containsKey(word)){
+				int num = nextWordFrq.get(word);
+				nextWordFrq.put(word, num+1);
 			}else{
-				wordFrq.put(word, 1);
+				nextWordFrq.put(word, 1);
 			}
 		}
+		
+		// next compare with the two different Map
+		MapIterator it = wordFrq.iterator;
+		
+		
 		}catch (Exception ex){
 			ex.printStackTrace();
 		}

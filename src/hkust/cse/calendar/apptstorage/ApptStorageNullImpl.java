@@ -456,11 +456,22 @@ public class ApptStorageNullImpl extends ApptStorage {
 	// verify user info
 	public boolean verifyUser(String username, String password) {
 		if (users.containsKey(username)) {
-			if (users.get(username).equals(password)) {
+			System.out.println("jjj");
+			if (users.get(username).Password().equals(password)) {
+				System.out.println("ooo");
 				return true;
 			}
 		}
+		System.out.println("kkk");
 		return false;
+	}
+	
+	public User getUser(String username) {
+		return users.get(username);
+	}
+	
+	public void addUser(User user) {
+		users.put(user.ID(), user);
 	}
 }
 

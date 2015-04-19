@@ -68,6 +68,14 @@ public class ApptStorageControllerImpl {
 	public void setDefaultUser(User user) {
 		mApptStorage.setDefaultUser(user);
 	}
+	
+	public User getUser(String username) {
+		return mApptStorage.getUser(username);
+	}
+	
+	public void addUser(User user) {
+		mApptStorage.addUser(user);
+	}
 
 	// method used to load appointment from xml record into hash map
 	public void LoadApptFromXml(){

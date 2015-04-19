@@ -16,7 +16,7 @@ import java.util.Timer;
 public abstract class ApptStorage {
 
 	public HashMap<String,Vector<Appt>> mAppts;		// a hashmap to save every thing to it, write to memory by the memory based storage implementation	
-	public HashMap<String, String> users;           // save user info
+	public HashMap<String, User> users;           // save user info
 	public User defaultUser;	//a user object, now is single user mode without login
 	public int mAssignedApptID;	//a global appointment ID for each appointment record
 	/////////////////////////////////////////////////////////////////////////////////////////	
@@ -51,7 +51,7 @@ public abstract class ApptStorage {
 	public ApptStorage() {	//default constructor
 	mAppts = new HashMap<String,Vector<Appt>>();
 	apptLocation = new Vector<Location>(0);
-	users = new HashMap<String,String>();
+	users = new HashMap<String,User>();
 	}
 
 	public abstract void SaveAppt(Appt appt);	//abstract method to save an appointment record
@@ -81,4 +81,7 @@ public abstract class ApptStorage {
 	
 	public abstract boolean verifyUser(String username, String password); // verify user info
 	
+	public abstract User getUser(String username);
+	
+	public abstract void addUser(User user);
 }

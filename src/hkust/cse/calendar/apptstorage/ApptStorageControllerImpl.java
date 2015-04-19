@@ -64,6 +64,10 @@ public class ApptStorageControllerImpl {
 	public User getDefaultUser() {
 		return mApptStorage.getDefaultUser();
 	}
+	
+	public void setDefaultUser(User user) {
+		mApptStorage.setDefaultUser(user);
+	}
 
 	// method used to load appointment from xml record into hash map
 	public void LoadApptFromXml(){
@@ -118,5 +122,10 @@ public class ApptStorageControllerImpl {
 	
 	public boolean checkOverlap(User user, Appt appt) {
 		return mApptStorage.checkOverlap(user, appt);
+	}
+	
+	// verify user info
+	public boolean verifyUser(String username, String password) {
+		return mApptStorage.verifyUser(username,password);
 	}
 }

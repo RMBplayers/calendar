@@ -15,7 +15,8 @@ import java.util.Timer;
 
 public abstract class ApptStorage {
 
-	public HashMap<String,Vector<Appt>> mAppts;		//a hashmap to save every thing to it, write to memory by the memory based storage implementation	
+	public HashMap<String,Vector<Appt>> mAppts;		// a hashmap to save every thing to it, write to memory by the memory based storage implementation	
+	public HashMap<String, String> users;           // save user info
 	public User defaultUser;	//a user object, now is single user mode without login
 	public int mAssignedApptID;	//a global appointment ID for each appointment record
 	/////////////////////////////////////////////////////////////////////////////////////////	
@@ -50,7 +51,7 @@ public abstract class ApptStorage {
 	public ApptStorage() {	//default constructor
 	mAppts = new HashMap<String,Vector<Appt>>();
 	apptLocation = new Vector<Location>(0);
-	
+	users = new HashMap<String,String>();
 	}
 
 	public abstract void SaveAppt(Appt appt);	//abstract method to save an appointment record
@@ -67,6 +68,8 @@ public abstract class ApptStorage {
 	
 	public abstract User getDefaultUser();		//abstract method to return the current user object
 	
+	public abstract void setDefaultUser(User user);      //abstract method to set the current user object
+	
 	public abstract void LoadApptFromXml();		//abstract method to load appointment from xml reocrd into hash map
 	
 	/*
@@ -74,6 +77,8 @@ public abstract class ApptStorage {
 	 */
 	public abstract void scheduleApptsAll();
 	
-	public abstract boolean checkOverlap(User entity, Appt appt);
+	public abstract boolean checkOverlap(User entity, Appt appt); // check event overlap
+	
+	public abstract boolean verifyUser(String username, String password); // verify user info
 	
 }

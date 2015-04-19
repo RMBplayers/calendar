@@ -21,8 +21,7 @@ public class ApptStorageNullImpl extends ApptStorage {
 		{31,29,31,30,31,30,31,31,30,31,30,31}};
 // [0][] for non-leap year, [1][] for leap year
 	
-	public ApptStorageNullImpl( User user )
-	{
+	public void setDefaultUser(User user) { 
 		defaultUser = user;
 	}
 	
@@ -454,6 +453,15 @@ public class ApptStorageNullImpl extends ApptStorage {
 	 */
 	//public void whyShouldWePutScheduleHere()
 	
+	// verify user info
+	public boolean verifyUser(String username, String password) {
+		if (users.containsKey(username)) {
+			if (users.get(username).equals(password)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
 
 //task to be run when notify

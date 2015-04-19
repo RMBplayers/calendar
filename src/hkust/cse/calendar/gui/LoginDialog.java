@@ -99,13 +99,24 @@ public class LoginDialog extends JFrame implements ActionListener
 			// When the button is clicked, check the user name and password, and try to log the user in
 			
 			//login();
-			User user = new User( "noname", "nopass");
-			CalGrid grid = new CalGrid(new ApptStorageControllerImpl(new ApptStorageNullImpl(user)));
-			setVisible( false );
+			String username = userName.getText();
+			String passcode = password.getText();
+			ApptStorageControllerImpl controller = new ApptStorageControllerImpl(new ApptStorageNullImpl());
+			if (controller.verifyUser(username,passcode)) {
+				JOptionPane.showMessageDialog(this, "please check your username and password",
+						"Input Error", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			else {
+				User user = new User(username,passcode,true);
+				controller.setDefaultUser(user);
+				CalGrid grid = new CalGrid(controller);
+				setVisible( false );
+			}
 		}
 		else if(e.getSource() == signupButton)
 		{
-			// Create a new account
+			
 		}
 		else if(e.getSource() == closeButton)
 		{

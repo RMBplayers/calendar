@@ -12,12 +12,14 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 
@@ -33,6 +35,8 @@ public class LoginDialog extends JFrame implements ActionListener
 	private JButton closeButton;
 	private JButton signupButton;
 	private JButton signup;
+	private JRadioButton normal;
+	private JRadioButton administrator;
 	private Container contentPane;
 	
 	public LoginDialog()		// Create a dialog to log in
@@ -136,7 +140,7 @@ public class LoginDialog extends JFrame implements ActionListener
 			top.setLayout(new BoxLayout(top, BoxLayout.Y_AXIS));
 
 			JPanel namePanel = new JPanel();
-			namePanel.add(new JLabel("Name                             "));
+			namePanel.add(new JLabel(" Name                            "));
 			firstname = new JTextField(7);
 			lastname = new JTextField(7);
 			namePanel.add(firstname);
@@ -162,10 +166,21 @@ public class LoginDialog extends JFrame implements ActionListener
 			top.add(pwPanel2);
 			
 			JPanel emailPanel = new JPanel();
-			emailPanel.add(new JLabel("Email                             "));
+			emailPanel.add(new JLabel(" Email                            "));
 			email = new JTextField(15);
 			emailPanel.add(email);
 			top.add(emailPanel);
+			
+			JPanel userType = new JPanel();
+			userType.add(new JLabel("user type:                    "));
+			normal = new JRadioButton("normal",true);
+			userType.add(normal);
+			administrator = new JRadioButton("administrator",false);
+			userType.add(administrator);
+			ButtonGroup bgroup = new ButtonGroup();
+			bgroup.add(administrator);
+			bgroup.add(normal);
+			top.add(userType);
 			
 			contentPane.add("North", top);
 			
@@ -209,7 +224,7 @@ public class LoginDialog extends JFrame implements ActionListener
 						"Input Error", JOptionPane.ERROR_MESSAGE);
 			}
 			else {
-				User newUser = new User(username,passWord1,firstName,lastName,Email,false);
+				User newUser = new User(username,passWord1,firstName,lastName,Email,administrator.isSelected());
 				ApptStorageControllerImpl controller = new ApptStorageControllerImpl(new ApptStorageNullImpl());
 				controller.addUser(newUser);
 				controller.setDefaultUser(newUser);

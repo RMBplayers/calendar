@@ -209,12 +209,19 @@ public class LoginDialog extends JFrame implements ActionListener
 			String passWord1 = password.getText();
 			String passWord2 = password2.getText();
 			String Email = email.getText();
+			ApptStorageControllerImpl controller = new ApptStorageControllerImpl(new ApptStorageNullImpl());
 			if (firstName.equals("")||lastName.equals("")||username.equals("")||passWord1.equals("")||passWord2.equals("")||Email.equals("")) {
 				JOptionPane.showMessageDialog(this, "info cannot be empty",
 						"Input Error", JOptionPane.ERROR_MESSAGE);
 			} 
-//			else if (username check) {
-//		}
+			else if (controller.getUser(username) != null) {
+				JOptionPane.showMessageDialog(this, "username already exists",
+						"Input Error", JOptionPane.ERROR_MESSAGE);
+			}
+			else if (passWord1.length() < 8) {
+				JOptionPane.showMessageDialog(this, "password has to be at least 8 characters ",
+						"Input Error", JOptionPane.ERROR_MESSAGE);
+			}
 			else if (!passWord1.equals(passWord2)) {
 				JOptionPane.showMessageDialog(this, "passwords don't mathch",
 						"Input Error", JOptionPane.ERROR_MESSAGE);
@@ -225,7 +232,6 @@ public class LoginDialog extends JFrame implements ActionListener
 			}
 			else {
 				User newUser = new User(username,passWord1,firstName,lastName,Email,administrator.isSelected());
-				ApptStorageControllerImpl controller = new ApptStorageControllerImpl(new ApptStorageNullImpl());
 				controller.addUser(newUser);
 				controller.setDefaultUser(newUser);
 				CalGrid grid = new CalGrid(controller);

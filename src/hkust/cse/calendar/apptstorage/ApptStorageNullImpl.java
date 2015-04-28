@@ -3,6 +3,7 @@ package hkust.cse.calendar.apptstorage;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.Vector;
 import java.util.TimerTask;
@@ -23,6 +24,10 @@ public class ApptStorageNullImpl extends ApptStorage {
 	
 	public void setDefaultUser(User user) { 
 		defaultUser = user;
+	}
+	
+	public void setDefaultUserView(User user){
+		UserView = user;
 	}
 	
 	@Override
@@ -471,7 +476,12 @@ public class ApptStorageNullImpl extends ApptStorage {
 	}
 	
 	public void addUser(User user) {
+		userIDS.add(user.ID());
 		users.put(user.ID(), user);
+	}
+	
+	public  Vector<String> getAllUserIDS(){
+		return userIDS;
 	}
 }
 

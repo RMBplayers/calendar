@@ -69,6 +69,10 @@ public class ApptStorageControllerImpl {
 		mApptStorage.setDefaultUser(user);
 	}
 	
+	public void setDefaultUserView(User user) {
+		mApptStorage.setDefaultUserView(user);
+	}
+	
 	public User getUser(String username) {
 		return mApptStorage.getUser(username);
 	}
@@ -112,7 +116,13 @@ public class ApptStorageControllerImpl {
 		return mApptStorage.getTime();
 	}
 	
-	
+	/**
+	 * used to get all user ids for changing view
+	 * @return
+	 */
+	public Vector<String> getAllUserID(){
+		return mApptStorage.getAllUserIDS();
+	}
 	
 	/**
 	* this input the programmer-desired time and give user time for them to use

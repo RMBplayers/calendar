@@ -21,6 +21,8 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Vector;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -398,6 +400,43 @@ public class CalGrid extends JFrame implements ActionListener {
 			}
 		});
 		Appmenu.add(mi);
+		
+		JMenu UserVision = new JMenu("UserVision");
+		//controller.getUser(username);
+		// this part add all the user as a list
+		Vector<String> usernames = controller.getAllUserID();
+		int i = 0;
+		while (i < usernames.size()) {
+			mi = new JMenuItem(usernames.get(i));
+			mi.setActionCommand(usernames.get(i));
+			mi.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					//System.out.println(e.getActionCommand());
+					CalGrid.this.controller.setDefaultUserView(CalGrid.this.controller.getUser(e.getActionCommand()));
+				}
+			});
+			UserVision.add(mi);
+			++i;
+		}
+		
+		Appmenu.add(UserVision);
+		
+		
+		// for account management
+		JMenu Account = (JMenu) menuBar.add(new JMenu("Account"));
+		mi = new JMenuItem("Reset Account Information");
+		mi.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				// part for adding user change
+			}
+		});
+		Account.add(mi);
 
 		return menuBar;
 	}

@@ -18,9 +18,11 @@ public abstract class ApptStorage {
 	public HashMap<String,Vector<Appt>> mAppts;		// a hashmap to save every thing to it, write to memory by the memory based storage implementation	
 	public HashMap<String, User> users;           // save user info
 	public User defaultUser;	//a user object, now is single user mode without login
+	public User	UserView;
 	public int mAssignedApptID;	//a global appointment ID for each appointment record
 	/////////////////////////////////////////////////////////////////////////////////////////	
 	public Vector<Location> apptLocation; //can I initialize here?
+	public Vector<String>userIDS;
 	
 	//add following three commands to java code
 	public UserTimer newTime = new UserTimer();
@@ -52,6 +54,7 @@ public abstract class ApptStorage {
 	mAppts = new HashMap<String,Vector<Appt>>();
 	apptLocation = new Vector<Location>(0);
 	users = new HashMap<String,User>();
+	userIDS = new Vector<String>(0);
 	}
 
 	public abstract void SaveAppt(Appt appt);	//abstract method to save an appointment record
@@ -70,6 +73,8 @@ public abstract class ApptStorage {
 	
 	public abstract void setDefaultUser(User user);      //abstract method to set the current user object
 	
+	public abstract void setDefaultUserView(User user);
+	
 	public abstract void LoadApptFromXml();		//abstract method to load appointment from xml reocrd into hash map
 	
 	/*
@@ -84,4 +89,7 @@ public abstract class ApptStorage {
 	public abstract User getUser(String username);
 	
 	public abstract void addUser(User user);
+	
+	public abstract Vector<String> getAllUserIDS();
+	
 }

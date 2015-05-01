@@ -416,6 +416,7 @@ public class CalGrid extends JFrame implements ActionListener {
 					// TODO Auto-generated method stub
 					//System.out.println(e.getActionCommand());
 					CalGrid.this.controller.setDefaultUserView(CalGrid.this.controller.getUser(e.getActionCommand()));
+					System.out.println(CalGrid.this.controller.getUser(e.getActionCommand()));
 				}
 			});
 			UserVision.add(mi);

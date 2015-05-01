@@ -1,5 +1,6 @@
 package hkust.cse.calendar.apptstorage;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Vector;
@@ -10,7 +11,7 @@ import hkust.cse.calendar.unit.User;
 import hkust.cse.calendar.unit.Location;
 
 /* This class is for managing the Appt Storage according to different actions */
-public class ApptStorageControllerImpl {
+public class ApptStorageControllerImpl implements Serializable{
 
 	/* Remove the Appt from the storage */
 	public final static int REMOVE = 1;
@@ -43,6 +44,16 @@ public class ApptStorageControllerImpl {
 		return mApptStorage.RetrieveAppts(joinApptID);
 	}
 	
+	public void saveToDisk(String filepath){
+		mApptStorage.saveToDisk(filepath);
+	}
+	
+	
+	
+	public void loadFromDisk(String filepath){
+		mApptStorage.loadFromDisk(filepath);
+	}
+	
 	/* Manage the Appt in the storage
 	 * parameters: the Appt involved, the action to take on the Appt */
 	public void ManageAppt(Appt appt, int action) {
@@ -67,18 +78,6 @@ public class ApptStorageControllerImpl {
 	
 	public void setDefaultUser(User user) {
 		mApptStorage.setDefaultUser(user);
-	}
-	
-	public void setDefaultUserView(User user) {
-		mApptStorage.setDefaultUserView(user);
-	}
-	
-	public User getUser(String username) {
-		return mApptStorage.getUser(username);
-	}
-	
-	public void addUser(User user) {
-		mApptStorage.addUser(user);
 	}
 
 	// method used to load appointment from xml record into hash map
@@ -116,13 +115,7 @@ public class ApptStorageControllerImpl {
 		return mApptStorage.getTime();
 	}
 	
-	/**
-	 * used to get all user ids for changing view
-	 * @return
-	 */
-	public Vector<String> getAllUserID(){
-		return mApptStorage.getAllUserIDS();
-	}
+	
 	
 	/**
 	* this input the programmer-desired time and give user time for them to use

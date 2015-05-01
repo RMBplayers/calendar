@@ -265,4 +265,12 @@ public class Appt implements Serializable {
 	public int getFrequency() {
 		return frequency;
 	}
+	
+	public void setPublicity(boolean a){
+		Publicity = a;
+	}
+	
+	public boolean getPublicity(){
+		return this.Publicity;
+	}
 }

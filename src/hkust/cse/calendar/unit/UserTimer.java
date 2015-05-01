@@ -1,4 +1,5 @@
 package hkust.cse.calendar.unit;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,7 +11,7 @@ import java.util.GregorianCalendar;
  * \class UserTimer
  * \get and set offset
  */
-public class UserTimer  {
+public class UserTimer implements Serializable{
 	private GregorianCalendar newTime;
 	private GregorianCalendar normalTime;
 	private long diff = 0;

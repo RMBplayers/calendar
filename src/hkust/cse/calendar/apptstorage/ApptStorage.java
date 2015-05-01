@@ -6,6 +6,8 @@ import hkust.cse.calendar.unit.TimeSpan;
 import hkust.cse.calendar.unit.User;
 import hkust.cse.calendar.unit.UserTimer;
 
+import java.io.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,21 +15,22 @@ import java.util.Vector;
 import java.util.Timer;
 
 
-public abstract class ApptStorage {
+public abstract class ApptStorage implements Serializable{
 
+	private static final long serialVersionUID = 8122088960923649777L; 
+
+	
 	public HashMap<String,Vector<Appt>> mAppts;		// a hashmap to save every thing to it, write to memory by the memory based storage implementation	
-	public HashMap<String, User> users;           // save user info
+	public HashMap<String, String> users;           // save user info
 	public User defaultUser;	//a user object, now is single user mode without login
-	public User	UserView;
 	public int mAssignedApptID;	//a global appointment ID for each appointment record
 	/////////////////////////////////////////////////////////////////////////////////////////	
 	public Vector<Location> apptLocation; //can I initialize here?
-	public Vector<String>userIDS;
 	
 	//add following three commands to java code
 	public UserTimer newTime = new UserTimer();
 	
-	public Timer taskScheduler = new Timer();
+	public transient Timer taskScheduler = new Timer();
 		
 	public abstract void setTime(Timestamp t);
 		
@@ -53,8 +56,7 @@ public abstract class ApptStorage {
 	public ApptStorage() {	//default constructor
 	mAppts = new HashMap<String,Vector<Appt>>();
 	apptLocation = new Vector<Location>(0);
-	users = new HashMap<String,User>();
-	userIDS = new Vector<String>(0);
+	users = new HashMap<String,String>();
 	}
 
 	public abstract void SaveAppt(Appt appt);	//abstract method to save an appointment record
@@ -73,8 +75,6 @@ public abstract class ApptStorage {
 	
 	public abstract void setDefaultUser(User user);      //abstract method to set the current user object
 	
-	public abstract void setDefaultUserView(User user);
-	
 	public abstract void LoadApptFromXml();		//abstract method to load appointment from xml reocrd into hash map
 	
 	/*
@@ -86,10 +86,10 @@ public abstract class ApptStorage {
 	
 	public abstract boolean verifyUser(String username, String password); // verify user info
 	
-	public abstract User getUser(String username);
 	
-	public abstract void addUser(User user);
+	public abstract void saveToDisk(String filepath);
+
 	
-	public abstract Vector<String> getAllUserIDS();
+	public abstract void loadFromDisk(String filepath);
 	
 }

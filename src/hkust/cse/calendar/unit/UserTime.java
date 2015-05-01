@@ -1,5 +1,6 @@
 package hkust.cse.calendar.unit;
 
+import java.io.Serializable;
 import java.util.GregorianCalendar;
 
 /**
@@ -16,7 +17,7 @@ import java.util.GregorianCalendar;
  * \Date:28-3-2015
  */
 
-public class UserTime {
+public class UserTime implements Serializable{
 	public GregorianCalendar sysCalendar;
 	
 	/**

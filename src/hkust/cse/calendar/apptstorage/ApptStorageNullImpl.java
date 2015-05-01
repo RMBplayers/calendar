@@ -1,5 +1,6 @@
 package hkust.cse.calendar.apptstorage;
 
+import java.io.*;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -15,8 +16,10 @@ import hkust.cse.calendar.unit.TimeSpan;
 import hkust.cse.calendar.unit.User;
 import hkust.cse.calendar.unit.UserTimer;
 
-public class ApptStorageNullImpl extends ApptStorage {
+public class ApptStorageNullImpl extends ApptStorage implements Serializable{
 
+	private static final long serialVersionUID = 5519103861072189849L; 
+	
 	private User defaultUser = null;
 	final static private long [][] DAY_OF_MONTH = {{31,28,31,30,31,30,31,31,30,31,30,31},
 		{31,29,31,30,31,30,31,31,30,31,30,31}};
@@ -24,10 +27,6 @@ public class ApptStorageNullImpl extends ApptStorage {
 	
 	public void setDefaultUser(User user) { 
 		defaultUser = user;
-	}
-	
-	public void setDefaultUserView(User user){
-		UserView = user;
 	}
 	
 	@Override
@@ -461,35 +460,67 @@ public class ApptStorageNullImpl extends ApptStorage {
 	// verify user info
 	public boolean verifyUser(String username, String password) {
 		if (users.containsKey(username)) {
-			System.out.println("jjj");
-			if (users.get(username).Password().equals(password)) {
-				System.out.println("ooo");
+			if (users.get(username).equals(password)) {
 				return true;
 			}
 		}
-		System.out.println("kkk");
 		return false;
 	}
 	
-	public User getUser(String username) {
-		return users.get(username);
+	@Override
+	public void saveToDisk(String filepath){
+		try{
+			FileOutputStream fs = new FileOutputStream(filepath);
+			ObjectOutputStream os = new ObjectOutputStream(fs);
+			os.writeObject(this);
+			os.flush();
+			os.close();
+			fs.close();
+			
+			FileInputStream ls = new FileInputStream(filepath);
+			ObjectInputStream ca = new ObjectInputStream(ls);
+			Object temp = ca.readObject();
+			ApptStorage A = (ApptStorage) temp;
+			os.close();
+
+			System.out.println("File saved!");
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
-	
-	public void addUser(User user) {
-		userIDS.add(user.ID());
-		users.put(user.ID(), user);
+
+	@Override
+	public void loadFromDisk(String filepath){
+		try{
+			FileInputStream fs = new FileInputStream(filepath);
+			ObjectInputStream os = new ObjectInputStream(fs);
+			Object temp = os.readObject();
+			ApptStorage A = (ApptStorage) temp;
+
+			this.mAppts.putAll(A.mAppts);
+			this.users.putAll(A.users);
+			
+			os.close();
+		}catch(FileNotFoundException e){
+			System.out.println("Wait! File Not Found!");
+		} catch(Exception e){
+			e.printStackTrace();
+		}
 	}
-	
-	public  Vector<String> getAllUserIDS(){
-		return userIDS;
-	}
+	/*
+	@Override 
+	public String toString(){
+		String A = this.mAppts.toString() + "  666  "+this.users.toString();
+		
+		return A;
+	}*/
 }
 
 //task to be run when notify
 class notifyTask extends TimerTask{
 	
 	private Appt a;
-	private Timer t;
+	private transient Timer t;
 	private UserTimer userTime;
 	private int leapyear = 0;
 	final static private long [][] DAY_OF_MONTH = {{31,28,31,30,31,30,31,31,30,31,30,31},

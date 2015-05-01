@@ -44,6 +44,8 @@ public class Appt implements Serializable {
 	
 	private int frequency;   		            // frequency
 	
+	private boolean Publicity;					// check if could be seen by others
+	
 	public Appt() {								// A default constructor used to set all the attribute to default values
 		mApptID = 0;
 		mTimeSpan = null;

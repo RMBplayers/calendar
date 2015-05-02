@@ -48,8 +48,6 @@ public class ApptStorageControllerImpl implements Serializable{
 		mApptStorage.saveToDisk(filepath);
 	}
 	
-	
-	
 	public void loadFromDisk(String filepath){
 		mApptStorage.loadFromDisk(filepath);
 	}
@@ -78,6 +76,14 @@ public class ApptStorageControllerImpl implements Serializable{
 	
 	public void setDefaultUser(User user) {
 		mApptStorage.setDefaultUser(user);
+	}
+	
+	public User getUser(String username) {
+		return mApptStorage.getUser(username);
+	}
+	
+	public void addUser(User user) {
+		mApptStorage.addUser(user);
 	}
 
 	// method used to load appointment from xml record into hash map

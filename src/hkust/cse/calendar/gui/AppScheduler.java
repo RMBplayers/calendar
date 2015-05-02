@@ -530,11 +530,7 @@ public class AppScheduler extends JDialog implements ActionListener,
 		}
 		// Fix Me!
 		// Save the appointment to the hard disk
-		//parent.controller.saveToDisk("records.txt");
-		//parent.controller.loadFromDisk("record");
-		
-		//parent.controller.writeAppt("ApptRecords");
-		//parent.controller.writeUser("UserRecords");
+			
 	}
 		
 		

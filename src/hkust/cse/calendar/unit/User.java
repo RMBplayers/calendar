@@ -4,9 +4,12 @@ import java.io.Serializable;
 
 public class User implements Serializable {
 
-	private String mPassword;				// User password
-	private String mID;						// User id
-	private boolean admin;                // User type
+	private String mPassword;			   // User password
+	private String mID;					   // User id
+	private String mFirstname;              // firstname
+	private String mLastname; 			   // lastname
+	private String mEmail;				   // email
+	private boolean admin;                 // User type
 	
 	// Getter of the user id
 	public String ID() {		
@@ -14,9 +17,12 @@ public class User implements Serializable {
 	}
 
 	// Constructor of class 'User' which set up the user id and password
-	public User(String id, String pass, boolean isAdmin) {
+	public User(String id, String pass, String firstname, String lastname, String email, boolean isAdmin) {
 		mID = id;
 		mPassword = pass;
+		mFirstname = firstname;
+		mLastname = lastname;
+		mEmail = email;
 		admin = isAdmin;
 	}
 
@@ -35,6 +41,27 @@ public class User implements Serializable {
 		mPassword = pass;
 	}
 	
+	// Setter of the firstname
+	public void firstname(String firstname) {
+		mFirstname = firstname;
+	}
+	
+    // Setter of the lastname
+	public void lastname(String lastname) {
+		mLastname = lastname;
+	}
+	
+	// Setter of the email
+	public void mEmail(String email) {
+		mEmail = email;
+	}
+	
+	// Setter of admin
+	public void admin(boolean isadmin) {
+		admin = isadmin;
+	}
+	
+	// Getter of admin
 	public boolean isAdmin() {
 		return admin;
 	}

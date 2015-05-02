@@ -1,14 +1,14 @@
 package hkust.cse.calendar.apptstorage;
 
-import java.io.*;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.Timer;
 import java.util.Vector;
 import java.util.TimerTask;
 import java.util.Calendar;
+
+import java.io.*;
 
 import hkust.cse.calendar.unit.Appt;
 import hkust.cse.calendar.unit.Location;
@@ -74,7 +74,7 @@ public class ApptStorageNullImpl extends ApptStorage implements Serializable{
 			Vector<Appt> Apptlist = mAppts.get(userID);
 			Apptlist.add(appt);
 			// warning, replace it with the following
-			// mAppts.replace(userID, Apptlist);
+			//mAppts.replace(userID, Apptlist);
 			mAppts.put(userID, Apptlist);
 		}
 		else {
@@ -460,11 +460,22 @@ public class ApptStorageNullImpl extends ApptStorage implements Serializable{
 	// verify user info
 	public boolean verifyUser(String username, String password) {
 		if (users.containsKey(username)) {
-			if (users.get(username).equals(password)) {
+			System.out.println("jjj");
+			if (users.get(username).Password().equals(password)) {
+				System.out.println("ooo");
 				return true;
 			}
 		}
+		System.out.println("kkk");
 		return false;
+	}
+	
+	public User getUser(String username) {
+		return users.get(username);
+	}
+	
+	public void addUser(User user) {
+		users.put(user.ID(), user);
 	}
 	
 	@Override
@@ -499,6 +510,7 @@ public class ApptStorageNullImpl extends ApptStorage implements Serializable{
 
 			this.mAppts.putAll(A.mAppts);
 			this.users.putAll(A.users);
+		
 			
 			os.close();
 		}catch(FileNotFoundException e){
@@ -507,13 +519,6 @@ public class ApptStorageNullImpl extends ApptStorage implements Serializable{
 			e.printStackTrace();
 		}
 	}
-	/*
-	@Override 
-	public String toString(){
-		String A = this.mAppts.toString() + "  666  "+this.users.toString();
-		
-		return A;
-	}*/
 }
 
 //task to be run when notify

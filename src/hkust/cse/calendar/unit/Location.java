@@ -10,7 +10,7 @@ import java.io.Serializable;
  * getLocationName and setLocationName 
  */
 public class Location implements Serializable{
-	private transient String locationName;
+	private String locationName;
 	
 	//*conversion constructor 
 	public Location(String name) {

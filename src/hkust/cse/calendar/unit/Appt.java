@@ -44,7 +44,7 @@ public class Appt implements Serializable {
 	
 	private int frequency;   		            // frequency
 	
-	private boolean Publicity;					// check if could be seen by others
+	private boolean publicity;					// check if could be seen by others
 	
 	public Appt() {								// A default constructor used to set all the attribute to default values
 		mApptID = 0;
@@ -58,7 +58,7 @@ public class Appt implements Serializable {
 		joinApptID = -1;
 		reminder = new Reminder();
 		frequency = onetime;
-		Publicity = false;
+		publicity = false;
 	}
 
 	// Getter of the mTimeSpan
@@ -268,10 +268,10 @@ public class Appt implements Serializable {
 	}
 	
 	public void setPublicity(boolean a){
-		Publicity = a;
+		publicity = a;
 	}
 	
 	public boolean getPublicity(){
-		return this.Publicity;
+		return this.publicity;
 	}
 }

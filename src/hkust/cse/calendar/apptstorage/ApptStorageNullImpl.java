@@ -3,11 +3,11 @@ package hkust.cse.calendar.apptstorage;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.Timer;
 import java.util.Vector;
 import java.util.TimerTask;
 import java.util.Calendar;
+import java.io.*;
 
 import hkust.cse.calendar.unit.Appt;
 import hkust.cse.calendar.unit.Location;
@@ -15,8 +15,10 @@ import hkust.cse.calendar.unit.TimeSpan;
 import hkust.cse.calendar.unit.User;
 import hkust.cse.calendar.unit.UserTimer;
 
-public class ApptStorageNullImpl extends ApptStorage {
+public class ApptStorageNullImpl extends ApptStorage implements Serializable{
 
+	private static final long serialVersionUID = 5519103861072189849L; 
+	
 	private User defaultUser = null;
 	final static private long [][] DAY_OF_MONTH = {{31,28,31,30,31,30,31,31,30,31,30,31},
 		{31,29,31,30,31,30,31,31,30,31,30,31}};
@@ -26,9 +28,14 @@ public class ApptStorageNullImpl extends ApptStorage {
 		defaultUser = user;
 	}
 	
-	public void setDefaultUserView(User user){
-		UserView = user;
+	public void setUserView(User user){
+		userView = user;
 	}
+	
+	public User getUserView(){
+		return this.userView;
+	}
+	
 	
 	@Override
 	public void setTime(Timestamp t) {
@@ -75,7 +82,7 @@ public class ApptStorageNullImpl extends ApptStorage {
 			Vector<Appt> Apptlist = mAppts.get(userID);
 			Apptlist.add(appt);
 			// warning, replace it with the following
-			// mAppts.replace(userID, Apptlist);
+			//mAppts.replace(userID, Apptlist);
 			mAppts.put(userID, Apptlist);
 		}
 		else {
@@ -97,9 +104,8 @@ public class ApptStorageNullImpl extends ApptStorage {
 	public Appt[] RetrieveAppts(User entity, TimeSpan time) {
     
     //public Appt[] RetrieveAppts(User entity, TimeSpan time) {
-        String userID = UserView.ID();
+		String userID = userView.ID();
         
-        // if want to retrieve current user's appts    
         if (mAppts.containsKey(userID)) {
             Vector<Appt> Apptlist = mAppts.get(userID);
             Appt[] selectedAppts = new Appt[Apptlist.size()];
@@ -109,10 +115,11 @@ public class ApptStorageNullImpl extends ApptStorage {
                	if (userID != defaultUser.ID() && Apptlist.get(i).getPublicity() == false){
             		continue;
             	}
-                // and < time + the length of a day in milliseconds
+            	
+            	// and < time + the length of a day in milliseconds
                 long starttime = Apptlist.get(i).TimeSpan().StartTime().getTime();
                 long endtime = Apptlist.get(i).TimeSpan().EndTime().getTime();
-                if(Apptlist.get(i).getFrequency() == 0){                	
+                if(Apptlist.get(i).getFrequency() == 0){
                     if ((starttime >= time.StartTime().getTime()
                          && starttime < time.EndTime().getTime())
                         ||(endtime > time.StartTime().getTime()
@@ -481,12 +488,54 @@ public class ApptStorageNullImpl extends ApptStorage {
 	}
 	
 	public void addUser(User user) {
-		userIDS.add(user.ID());
 		users.put(user.ID(), user);
 	}
 	
-	public  Vector<String> getAllUserIDS(){
-		return userIDS;
+	@Override
+	public void saveToDisk(String filepath){
+		try{
+			FileOutputStream fs = new FileOutputStream(filepath);
+			ObjectOutputStream os = new ObjectOutputStream(fs);
+			os.writeObject(this);
+			os.flush();
+			os.close();
+			fs.close();
+			
+			FileInputStream ls = new FileInputStream(filepath);
+			ObjectInputStream ca = new ObjectInputStream(ls);
+			Object temp = ca.readObject();
+			ApptStorage A = (ApptStorage) temp;
+			os.close();
+
+			System.out.println("File saved!");
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public Vector<String> getAllUserIDS(){
+		Vector<String> userIdList = new Vector<String>(this.users.keySet());
+		return userIdList;
+	}
+
+	@Override
+	public void loadFromDisk(String filepath){
+		try{
+			FileInputStream fs = new FileInputStream(filepath);
+			ObjectInputStream os = new ObjectInputStream(fs);
+			Object temp = os.readObject();
+			ApptStorage A = (ApptStorage) temp;
+
+			this.mAppts.putAll(A.mAppts);
+			this.users.putAll(A.users);
+		
+			
+			os.close();
+		}catch(FileNotFoundException e){
+			System.out.println("Wait! File Not Found!");
+		} catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 }
 
@@ -494,7 +543,7 @@ public class ApptStorageNullImpl extends ApptStorage {
 class notifyTask extends TimerTask{
 	
 	private Appt a;
-	private Timer t;
+	private transient Timer t;
 	private UserTimer userTime;
 	private int leapyear = 0;
 	final static private long [][] DAY_OF_MONTH = {{31,28,31,30,31,30,31,31,30,31,30,31},

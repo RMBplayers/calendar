@@ -21,7 +21,6 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.JComboBox;
@@ -111,6 +110,7 @@ public class CalGrid extends JFrame implements ActionListener {
 
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
+				controller.saveToDisk("records.txt");
 				System.exit(0);
 			}
 		});
@@ -356,6 +356,7 @@ public class CalGrid extends JFrame implements ActionListener {
 				if (n == JOptionPane.YES_OPTION){
 					//controller.dumpStorageToFile();
 					//System.out.println("closed");
+					controller.saveToDisk("records.txt");
 					dispose();
 					CalendarMain.logOut = true;
 					return;	//return to CalendarMain()
@@ -401,8 +402,8 @@ public class CalGrid extends JFrame implements ActionListener {
 		});
 		Appmenu.add(mi);
 		
-		JMenu UserVision = new JMenu("UserVision");
-		//controller.getUser(username);
+		// change user view
+		JMenu userVision = new JMenu("UserVision");
 		// this part add all the user as a list
 		Vector<String> usernames = controller.getAllUserID();
 		int i = 0;
@@ -415,19 +416,18 @@ public class CalGrid extends JFrame implements ActionListener {
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
 					//System.out.println(e.getActionCommand());
-					CalGrid.this.controller.setDefaultUserView(CalGrid.this.controller.getUser(e.getActionCommand()));
-					System.out.println(CalGrid.this.controller.getUser(e.getActionCommand()));
+					CalGrid.this.controller.setUserView(CalGrid.this.controller.getUser(e.getActionCommand()));
+					//System.out.println(CalGrid.this.controller.getUser(e.getActionCommand()));
 				}
 			});
-			UserVision.add(mi);
+			userVision.add(mi);
 			++i;
 		}
-		
-		Appmenu.add(UserVision);
-		
+		Appmenu.add(userVision);
+		// end this jmenu
 		
 		// for account management
-		JMenu Account = (JMenu) menuBar.add(new JMenu("Account"));
+		JMenu Account = (JMenu) menuBar.add(new JMenu("ManageAccount"));
 		mi = new JMenuItem("Reset Account Information");
 		mi.addActionListener(new ActionListener() {
 			
@@ -438,7 +438,8 @@ public class CalGrid extends JFrame implements ActionListener {
 			}
 		});
 		Account.add(mi);
-
+		// end
+		
 		return menuBar;
 	}
 

@@ -116,8 +116,13 @@ public class LoginDialog extends JFrame implements ActionListener
 			// remember to modify the controller when sign up (line 214)
 			///////////////////
 			
+			////////////////////
+			// lizhiahng tou tou tou
+			///////////////////
+			
 			
 			ApptStorageControllerImpl controller = new ApptStorageControllerImpl(new ApptStorageNullImpl());
+			controller.loadFromDisk("records.txt");
 			if (!controller.verifyUser(username,passcode)) {
 				JOptionPane.showMessageDialog(this, "please check your username and password",
 						"Input Error", JOptionPane.ERROR_MESSAGE);
@@ -126,6 +131,8 @@ public class LoginDialog extends JFrame implements ActionListener
 			else {
 				User user = controller.getUser(username);
 				controller.setDefaultUser(user);
+				controller.setUserView(user);
+				controller.loadFromDisk("records.txt");
 				CalGrid grid = new CalGrid(controller);
 				setVisible( false );
 			}
@@ -233,8 +240,8 @@ public class LoginDialog extends JFrame implements ActionListener
 			else {
 				User newUser = new User(username,passWord1,firstName,lastName,Email,administrator.isSelected());
 				controller.addUser(newUser);
+				
 				controller.setDefaultUser(newUser);
-				controller.setDefaultUserView(newUser);
 				CalGrid grid = new CalGrid(controller);
 				setVisible( false );
 				

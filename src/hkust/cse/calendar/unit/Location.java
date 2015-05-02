@@ -1,5 +1,7 @@
 package hkust.cse.calendar.unit;
 
+import java.io.Serializable;
+
 /*
  * \class Location
  * \author JX 26-3-2015
@@ -7,7 +9,7 @@ package hkust.cse.calendar.unit;
  * available manipulations are
  * getLocationName and setLocationName 
  */
-public class Location {
+public class Location implements Serializable{
 	private String locationName;
 	
 	//*conversion constructor 

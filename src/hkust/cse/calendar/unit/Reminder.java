@@ -1,8 +1,9 @@
 package hkust.cse.calendar.unit;
 
+import java.io.Serializable;
 import java.util.TimerTask;
 
-public class Reminder {
+public class Reminder implements Serializable{
 	
 	// three key data in reminder
 	private int days = 0;

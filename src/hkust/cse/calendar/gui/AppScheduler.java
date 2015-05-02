@@ -191,7 +191,6 @@ public class AppScheduler extends JDialog implements ActionListener,
 		titleAndTextPanel.add(locationField);
 		//add end
 		
-		
 		//add frequency
 		Vector<String> frequencyVector = new Vector<String>();
 		frequencyVector.add("Once");
@@ -215,7 +214,6 @@ public class AppScheduler extends JDialog implements ActionListener,
 		publicityPanel.add(publicityLabel);
 		publicityPanel.add(publicitySetter);
 		// add finish
-		
 		
 		detailPanel = new JPanel();
 		detailPanel.setLayout(new BorderLayout());
@@ -505,6 +503,7 @@ public class AppScheduler extends JDialog implements ActionListener,
 			NewAppt.setInfo(detailArea.getText());
 			NewAppt.setLocation(locationField.getSelectedItem().toString());
 			
+			
 			// save the publicity
 			if (publicitySetter.getSelectedItem().toString().equals("PRIVATE")){
 				NewAppt.setPublicity(false);
@@ -514,13 +513,6 @@ public class AppScheduler extends JDialog implements ActionListener,
 				//System.out.print("it is true");
 				//
 			}
-			
-			
-			
-			// end save
-			
-			
-			
 			
 			// save the reminder to the appt
 			// warning: haven't handle invalid input

@@ -512,6 +512,7 @@ public class AppScheduler extends JDialog implements ActionListener,
 			else{
 				NewAppt.setPublicity(true);
 				//System.out.print("it is true");
+				//
 			}
 			
 			

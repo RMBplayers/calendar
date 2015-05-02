@@ -97,17 +97,22 @@ public class ApptStorageNullImpl extends ApptStorage {
 	public Appt[] RetrieveAppts(User entity, TimeSpan time) {
     
     //public Appt[] RetrieveAppts(User entity, TimeSpan time) {
-        String userID = defaultUser.ID();
+        String userID = UserView.ID();
         
+        // if want to retrieve current user's appts    
         if (mAppts.containsKey(userID)) {
             Vector<Appt> Apptlist = mAppts.get(userID);
             Appt[] selectedAppts = new Appt[Apptlist.size()];
             int j = 0;
             for (int i = 0;i < Apptlist.size();i++) {
+            	// skip one appt if it is not allowed to bee seen
+               	if (userID != defaultUser.ID() && Apptlist.get(i).getPublicity() == false){
+            		continue;
+            	}
                 // and < time + the length of a day in milliseconds
                 long starttime = Apptlist.get(i).TimeSpan().StartTime().getTime();
                 long endtime = Apptlist.get(i).TimeSpan().EndTime().getTime();
-                if(Apptlist.get(i).getFrequency() == 0){
+                if(Apptlist.get(i).getFrequency() == 0){                	
                     if ((starttime >= time.StartTime().getTime()
                          && starttime < time.EndTime().getTime())
                         ||(endtime > time.StartTime().getTime()

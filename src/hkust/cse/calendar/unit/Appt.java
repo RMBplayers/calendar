@@ -58,6 +58,7 @@ public class Appt implements Serializable {
 		joinApptID = -1;
 		reminder = new Reminder();
 		frequency = onetime;
+		Publicity = false;
 	}
 
 	// Getter of the mTimeSpan

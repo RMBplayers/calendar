@@ -234,6 +234,7 @@ public class LoginDialog extends JFrame implements ActionListener
 				User newUser = new User(username,passWord1,firstName,lastName,Email,administrator.isSelected());
 				controller.addUser(newUser);
 				controller.setDefaultUser(newUser);
+				controller.setDefaultUserView(newUser);
 				CalGrid grid = new CalGrid(controller);
 				setVisible( false );
 				

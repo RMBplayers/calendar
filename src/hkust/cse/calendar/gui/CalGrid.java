@@ -247,6 +247,11 @@ public class CalGrid extends JFrame implements ActionListener {
 		UpdateCal();
 		pack();				// sized the window to a preferred size
 		setVisible(true);	//set the window to be visible
+		
+		if (!controller.checkMailBox()) {
+			JOptionPane.showMessageDialog(this, "please check your mailbox",
+					"HasMail", JOptionPane.DEFAULT_OPTION);
+		}
 	}
 
 	public TableModel prepareTableModel() {
@@ -427,7 +432,7 @@ public class CalGrid extends JFrame implements ActionListener {
 		// end this jmenu
 		
 		// for account management
-		JMenu Account = (JMenu) menuBar.add(new JMenu("ManageAccount"));
+		JMenu Account = (JMenu) menuBar.add(new JMenu("Account"));
 		mi = new JMenuItem("Reset Account Information");
 		mi.addActionListener(new ActionListener() {
 			
@@ -435,6 +440,17 @@ public class CalGrid extends JFrame implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				// part for adding user change
+			}
+		});
+		Account.add(mi);
+		
+		mi = new JMenuItem("MailBox");
+		mi.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				MailInterface a = new MailInterface("",CalGrid.this);
 			}
 		});
 		Account.add(mi);

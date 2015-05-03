@@ -2,6 +2,7 @@ package hkust.cse.calendar.apptstorage;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Vector;
 
@@ -9,6 +10,7 @@ import hkust.cse.calendar.unit.Appt;
 import hkust.cse.calendar.unit.TimeSpan;
 import hkust.cse.calendar.unit.User;
 import hkust.cse.calendar.unit.Location;
+import hkust.cse.calendar.unit.MailType;
 
 /* This class is for managing the Appt Storage according to different actions */
 public class ApptStorageControllerImpl implements Serializable{
@@ -162,4 +164,13 @@ public class ApptStorageControllerImpl implements Serializable{
 	public boolean verifyUser(String username, String password) {
 		return mApptStorage.verifyUser(username,password);
 	}
-}
+	
+	// mailbox related
+	public boolean checkMailBox(){
+		return mApptStorage.getDefaultUser().getMailBox().isEmpty();
+	}
+	
+	public void sendMail(User s, User r, MailType t, String l, Collection<TimeSpan> c){
+		s.getMailBox().addMail(s, r, t, l, c);
+	}
+}	

@@ -10,6 +10,7 @@ public class User implements Serializable {
 	private String mLastname; 			   // lastname
 	private String mEmail;				   // email
 	private boolean admin;                 // User type
+	private MailBox mailBox;			   // mailbox which used to receive invite
 	
 	// Getter of the user id
 	public String ID() {		
@@ -24,6 +25,7 @@ public class User implements Serializable {
 		mLastname = lastname;
 		mEmail = email;
 		admin = isAdmin;
+		mailBox = new MailBox();		// an empty mailbox
 	}
 
 	// Another getter of the user id
@@ -64,5 +66,9 @@ public class User implements Serializable {
 	// Getter of admin
 	public boolean isAdmin() {
 		return admin;
+	}
+	
+	public MailBox getMailBox(){
+		return this.mailBox;
 	}
 }

@@ -713,7 +713,7 @@ public class CalGrid extends JFrame implements ActionListener {
 		end.setSeconds(59);
 		
 		TimeSpan period = new TimeSpan(start, end);
-		return controller.RetrieveAppts(mCurrUser, period);
+		return controller.RetrieveAppts(this.controller.getUserView(), period);
 	}
 
 	public AppList getAppList() {

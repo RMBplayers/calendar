@@ -123,6 +123,7 @@ public class LoginDialog extends JFrame implements ActionListener
 			
 			ApptStorageControllerImpl controller = new ApptStorageControllerImpl(new ApptStorageNullImpl());
 			controller.loadFromDisk("records.txt");
+
 			if (!controller.verifyUser(username,passcode)) {
 				JOptionPane.showMessageDialog(this, "please check your username and password",
 						"Input Error", JOptionPane.ERROR_MESSAGE);
@@ -131,7 +132,7 @@ public class LoginDialog extends JFrame implements ActionListener
 			else {
 				User user = controller.getUser(username);
 				controller.setDefaultUser(user);
-				controller.loadFromDisk("records.txt");
+				//controller.loadFromDisk("records.txt");
 				CalGrid grid = new CalGrid(controller);
 				setVisible( false );
 			}
@@ -216,6 +217,7 @@ public class LoginDialog extends JFrame implements ActionListener
 			String passWord2 = password2.getText();
 			String Email = email.getText();
 			ApptStorageControllerImpl controller = new ApptStorageControllerImpl(new ApptStorageNullImpl());
+			controller.loadFromDisk("records.txt");
 			if (firstName.equals("")||lastName.equals("")||username.equals("")||passWord1.equals("")||passWord2.equals("")||Email.equals("")) {
 				JOptionPane.showMessageDialog(this, "info cannot be empty",
 						"Input Error", JOptionPane.ERROR_MESSAGE);

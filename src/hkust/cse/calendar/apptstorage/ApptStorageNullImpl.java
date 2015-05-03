@@ -475,7 +475,7 @@ public class ApptStorageNullImpl extends ApptStorage implements Serializable{
 	}
 	
 	public void addUser(User user) {
-		users.put(user.ID(), user);
+		users.put(user.ID(), user);//System.out.println(users.toString());
 	}
 	
 	@Override
@@ -484,9 +484,11 @@ public class ApptStorageNullImpl extends ApptStorage implements Serializable{
 			FileOutputStream fs = new FileOutputStream(filepath);
 			ObjectOutputStream os = new ObjectOutputStream(fs);
 			os.writeObject(this);
+			//os.writeUnshared(this);
 			os.flush();
 			os.close();
 			fs.close();
+			
 			
 			FileInputStream ls = new FileInputStream(filepath);
 			ObjectInputStream ca = new ObjectInputStream(ls);
@@ -510,7 +512,7 @@ public class ApptStorageNullImpl extends ApptStorage implements Serializable{
 
 			this.mAppts.putAll(A.mAppts);
 			this.users.putAll(A.users);
-		
+			//System.out.println(this.users.toString());
 			
 			os.close();
 		}catch(FileNotFoundException e){

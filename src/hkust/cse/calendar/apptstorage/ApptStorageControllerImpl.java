@@ -34,6 +34,10 @@ public class ApptStorageControllerImpl implements Serializable{
 		mApptStorage = storage;
 	}
 
+	public ApptStorage getApptStorage(){
+		return mApptStorage;
+	}
+	
 	/* Retrieve the Appt's in the storage for a specific user within the specific time span */
 	public Appt[] RetrieveAppts(User entity, TimeSpan time) {
 		return mApptStorage.RetrieveAppts(entity, time);

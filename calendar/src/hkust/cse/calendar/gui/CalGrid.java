@@ -6,6 +6,7 @@ import hkust.cse.calendar.unit.Appt;
 import hkust.cse.calendar.unit.TimeSpan;
 import hkust.cse.calendar.unit.User;
 
+import java.awt.Component;
 import java.awt.GraphicsEnvironment;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -47,6 +48,8 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+
+//import sun.security.mscapi.KeyStore.MY;
 
 
 public class CalGrid extends JFrame implements ActionListener {
@@ -248,10 +251,12 @@ public class CalGrid extends JFrame implements ActionListener {
 		pack();				// sized the window to a preferred size
 		setVisible(true);	//set the window to be visible
 		
+		/*
 		if (!controller.checkMailBox()) {
 			JOptionPane.showMessageDialog(this, "please check your mailbox",
 					"HasMail", JOptionPane.DEFAULT_OPTION);
 		}
+		*/
 	}
 
 	public TableModel prepareTableModel() {
@@ -422,6 +427,7 @@ public class CalGrid extends JFrame implements ActionListener {
 					// TODO Auto-generated method stub
 					//System.out.println(e.getActionCommand());
 					CalGrid.this.controller.setUserView(CalGrid.this.controller.getUser(e.getActionCommand()));
+					CalGrid.this.UpdateCal();
 					//System.out.println(CalGrid.this.controller.getUser(e.getActionCommand()));
 				}
 			});
@@ -594,7 +600,7 @@ public class CalGrid extends JFrame implements ActionListener {
 						}
 					}
 				}
-			}
+			}			
 			TableModel t = prepareTableModel();
 			this.tableView.setModel(t);
 			this.tableView.repaint();

@@ -13,6 +13,12 @@ public class MailBox {
 		sendBox = new Vector<Mail>();
 	}
 	
+	public Mail receiveMail(Mail s){
+		receiveBox.add(s);
+		return s;
+	}
+	
+	// add mail to send box
 	public Mail addMail(Mail s){
 		sendBox.add(s);
 		return s;
@@ -25,9 +31,10 @@ public class MailBox {
 	}
 	
 	public void sendMail(){
-		while(!sendBox.isEmpty()){
-			Mail tmp = sendBox.remove(0);
-			tmp.getReceiver().getMailBox().addMail(tmp);
+		int i=0;
+		while(i<sendBox.size()){
+			Mail tmp = sendBox.get(i);
+			//tmp.getReceiver().getMailBox().receiveMail(tmp);
 		}
 	}
 	
@@ -45,6 +52,32 @@ public class MailBox {
 	
 	public void clearSendBox(){
 		receiveBox.clear();
+	}
+	
+	// if one receive the all the reply of the mail, determine if schedule or not
+	public void determineAppt(){
+		Vector<Mail> reply = new Vector<Mail>();
+		int i=0;
+		Mail tmp;
+		while(i<receiveBox.size()){
+			tmp = receiveBox.get(i);
+			if(tmp.getMailType()==MailType.invite){
+				reply.add(tmp);
+			}
+		}
+	}
+	
+	public Vector<Mail> findMailFromSendBox(Vector<TimeSpan> a){
+		Vector<Mail> m = new Vector<Mail>();
+		int i=0;
+		Mail tmp;
+		while(i<sendBox.size()){
+			tmp = sendBox.get(i);
+			if(tmp.getMailType()==MailType.invite && tmp.getTimeSlotList().equals(a)){
+				m.add(tmp);
+			}
+		}
+		return m;
 	}
 	
 	public boolean isEmpty(){

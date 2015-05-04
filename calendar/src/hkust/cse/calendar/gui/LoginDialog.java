@@ -133,7 +133,6 @@ public class LoginDialog extends JFrame implements ActionListener
 				User user = controller.getUser(username);
 				controller.setDefaultUser(user);
 				controller.setUserView(user);
-				controller.loadFromDisk("records.txt");
 				CalGrid grid = new CalGrid(controller);
 				setVisible( false );
 			}
@@ -218,6 +217,7 @@ public class LoginDialog extends JFrame implements ActionListener
 			String passWord2 = password2.getText();
 			String Email = email.getText();
 			ApptStorageControllerImpl controller = new ApptStorageControllerImpl(new ApptStorageNullImpl());
+			controller.loadFromDisk("records.txt");
 			if (firstName.equals("")||lastName.equals("")||username.equals("")||passWord1.equals("")||passWord2.equals("")||Email.equals("")) {
 				JOptionPane.showMessageDialog(this, "info cannot be empty",
 						"Input Error", JOptionPane.ERROR_MESSAGE);

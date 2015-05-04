@@ -32,10 +32,22 @@ public class Mail{
 	
 	public void setMailType(MailType a){
 		type = a;
+		return; 
 	}
 	
 	public String getLocation(){
 		return this.location;
+	}
+	
+	public Vector<TimeSpan> getTimeSlotList(){
+		return this.timeSlotList;
+	}
+	
+	public boolean belongTo(Mail a){
+		if (this.location == a.getLocation() && this.receiver == a.getSender() && this.sender == a.getReceiver()){
+			
+		}
+		return true;
 	}
 	
 }

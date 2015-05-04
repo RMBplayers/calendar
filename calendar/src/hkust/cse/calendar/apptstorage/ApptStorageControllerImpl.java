@@ -166,6 +166,7 @@ public class ApptStorageControllerImpl implements Serializable{
 	}
 	
 	// mailbox related
+	/*
 	public boolean checkMailBox(){
 		return mApptStorage.getDefaultUser().getMailBox().isEmpty();
 	}
@@ -173,4 +174,5 @@ public class ApptStorageControllerImpl implements Serializable{
 	public void sendMail(User s, User r, MailType t, String l, Collection<TimeSpan> c){
 		s.getMailBox().addMail(s, r, t, l, c);
 	}
+	*/
 }	

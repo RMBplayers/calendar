@@ -1,15 +1,22 @@
 package hkust.cse.calendar.unit;
 
 import java.io.Serializable;
+import java.util.Vector;
 
 public class User implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String mPassword;			   // User password
 	private String mID;					   // User id
 	private String mFirstname;              // firstname
 	private String mLastname; 			   // lastname
 	private String mEmail;				   // email
 	private boolean admin;                 // User type
+	
+	private Vector<Invitation> invitations;
 	
 	// Getter of the user id
 	public String ID() {		
@@ -24,6 +31,8 @@ public class User implements Serializable {
 		mLastname = lastname;
 		mEmail = email;
 		admin = isAdmin;
+		
+		invitations = new Vector<Invitation>();
 	}
 
 	// Another getter of the user id
@@ -64,5 +73,13 @@ public class User implements Serializable {
 	// Getter of admin
 	public boolean isAdmin() {
 		return admin;
+	}
+	
+	public void addInvitation(Invitation i) {
+		invitations.add(i);
+	}
+	
+	public Vector<Invitation> getInvitions() {
+		return invitations;
 	}
 }

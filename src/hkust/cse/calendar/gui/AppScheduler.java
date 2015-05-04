@@ -226,9 +226,9 @@ public class AppScheduler extends JDialog implements ActionListener,
 		JPanel panel2 = new JPanel();
 		panel2.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-//		inviteBut = new JButton("Invite");
-//		inviteBut.addActionListener(this);
-//		panel2.add(inviteBut);
+		inviteBut = new JButton("Invite");
+		inviteBut.addActionListener(this);
+		panel2.add(inviteBut);
 		
 		// reminder
 		JPanel reminder = new JPanel();
@@ -294,7 +294,6 @@ public class AppScheduler extends JDialog implements ActionListener,
 			allDisableEdit();
 		}
 		pack();
-
 	}
 	
 	AppScheduler(String title, CalGrid cal, int selectedApptId) {
@@ -326,7 +325,14 @@ public class AppScheduler extends JDialog implements ActionListener,
 				this.setVisible(false);
 				dispose();
 			}
-		} 
+		}else if (e.getSource() == inviteBut) {
+			//check if proper set
+			//if()
+			
+			InviteDialog ivd = new InviteDialog(parent.controller);
+			ivd.setVisible(true);
+			repaint();
+		}
 		// if click on "yes", then show the time schedule
 		else if ( e.getSource() == reminderRB1 ) {
 			existReminder = true;

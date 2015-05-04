@@ -3,6 +3,7 @@ package hkust.cse.calendar.unit;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.LinkedList;
 
 import javax.swing.JFrame;
@@ -262,5 +263,13 @@ public class Appt implements Serializable {
 	
 	public int getFrequency() {
 		return frequency;
+	}
+	
+	public Timestamp getStartTime() {
+		return mTimeSpan.StartTime();
+	}
+	
+	public Timestamp getEndTime() {
+		return mTimeSpan.EndTime();	
 	}
 }

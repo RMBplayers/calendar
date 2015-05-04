@@ -1,13 +1,14 @@
 package hkust.cse.calendar.apptstorage;
 
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Set;
 import java.util.Timer;
 import java.util.Vector;
 import java.util.TimerTask;
 import java.util.Calendar;
-
 import java.io.*;
 
 import hkust.cse.calendar.unit.Appt;
@@ -520,6 +521,10 @@ public class ApptStorageNullImpl extends ApptStorage implements Serializable{
 		} catch(Exception e){
 			e.printStackTrace();
 		}
+	}
+	
+	public Set<String> getAllUsers() {
+		return users.keySet();
 	}
 }
 

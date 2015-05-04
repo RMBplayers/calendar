@@ -400,6 +400,15 @@ public class CalGrid extends JFrame implements ActionListener {
 			}
 		});
 		Appmenu.add(mi);
+		
+		mi = new JMenuItem("Show invitations");
+		mi.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				InviteDealer ohohoh = new InviteDealer(controller.getDefaultUser().getInvitions());
+			}			
+		});
+		Appmenu.add(mi);
 
 		return menuBar;
 	}

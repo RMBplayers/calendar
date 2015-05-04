@@ -3,6 +3,7 @@ package hkust.cse.calendar.apptstorage;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Set;
 import java.util.Vector;
 
 import hkust.cse.calendar.unit.Appt;
@@ -148,5 +149,9 @@ public class ApptStorageControllerImpl implements Serializable{
 	// verify user info
 	public boolean verifyUser(String username, String password) {
 		return mApptStorage.verifyUser(username,password);
+	}
+	
+	public Set<String> getAllUsers() {
+		return mApptStorage.getAllUsers();
 	}
 }

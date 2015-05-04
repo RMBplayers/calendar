@@ -104,6 +104,10 @@ public class ApptStorageNullImpl extends ApptStorage implements Serializable{
             Appt[] selectedAppts = new Appt[Apptlist.size()];
             int j = 0;
             for (int i = 0;i < Apptlist.size();i++) {
+            	if(userID != defaultUser.ID() && Apptlist.get(i).getPublicity() == false) {
+            		continue;
+            	}
+            	
                 // and < time + the length of a day in milliseconds
                 long starttime = Apptlist.get(i).TimeSpan().StartTime().getTime();
                 long endtime = Apptlist.get(i).TimeSpan().EndTime().getTime();
@@ -525,6 +529,19 @@ public class ApptStorageNullImpl extends ApptStorage implements Serializable{
 	
 	public Set<String> getAllUsers() {
 		return users.keySet();
+	}
+	
+	public User getUserView(){
+		return this.userView;
+	}
+	
+	public void setUserView(User user){
+		userView = user;
+	}
+	
+	public Vector<String> getAllUserIDs() {
+		Vector<String> UserIDList = new Vector<String>(this.users.keySet());
+		return UserIDList;
 	}
 }
 

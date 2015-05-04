@@ -132,6 +132,7 @@ public class LoginDialog extends JFrame implements ActionListener
 			else {
 				User user = controller.getUser(username);
 				controller.setDefaultUser(user);
+				controller.setUserView(user);
 				//controller.loadFromDisk("records.txt");
 				CalGrid grid = new CalGrid(controller);
 				setVisible( false );
@@ -242,6 +243,7 @@ public class LoginDialog extends JFrame implements ActionListener
 				User newUser = new User(username,passWord1,firstName,lastName,Email,administrator.isSelected());
 				controller.addUser(newUser);
 				controller.setDefaultUser(newUser);
+				controller.setUserView(newUser);
 				CalGrid grid = new CalGrid(controller);
 				setVisible( false );
 				

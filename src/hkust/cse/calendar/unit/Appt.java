@@ -45,6 +45,8 @@ public class Appt implements Serializable {
 	
 	private int frequency;   		            // frequency
 	
+	private boolean publicity;
+	
 	public Appt() {								// A default constructor used to set all the attribute to default values
 		mApptID = 0;
 		mTimeSpan = null;
@@ -271,5 +273,13 @@ public class Appt implements Serializable {
 	
 	public Timestamp getEndTime() {
 		return mTimeSpan.EndTime();	
+	}
+	
+	public void setPublicity(boolean b) {
+		publicity = b;
+	}
+	
+	public boolean getPublicity() {
+		return publicity;
 	}
 }

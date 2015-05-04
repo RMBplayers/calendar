@@ -331,7 +331,7 @@ public class AppScheduler extends JDialog implements ActionListener,
 			
 			InviteDialog ivd = new InviteDialog(parent.controller);
 			ivd.setVisible(true);
-			repaint();
+			dispose();
 		}
 		// if click on "yes", then show the time schedule
 		else if ( e.getSource() == reminderRB1 ) {

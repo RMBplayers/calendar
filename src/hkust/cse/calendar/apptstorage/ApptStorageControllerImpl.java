@@ -154,4 +154,17 @@ public class ApptStorageControllerImpl implements Serializable{
 	public Set<String> getAllUsers() {
 		return mApptStorage.getAllUsers();
 	}
+	
+	// get user
+	public void setUserView(User user) {
+		mApptStorage.setUserView(user);
+	}
+	
+	public User getUserView() {
+		return mApptStorage.getUserView();
+	}
+	
+	public Vector<String> getAllUserID() {
+		return mApptStorage.getAllUserIDs();
+	}
 }

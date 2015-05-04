@@ -23,6 +23,7 @@ public abstract class ApptStorage implements Serializable{
 	public HashMap<String,Vector<Appt>> mAppts;		// a hashmap to save every thing to it, write to memory by the memory based storage implementation	
 	public HashMap<String, User> users;           // save user info
 	public User defaultUser;	//a user object, now is single user mode without login
+	public User userView;
 	public int mAssignedApptID;	//a global appointment ID for each appointment record
 	
 	/////////////////////////////////////////////////////////////////////////////////////////	
@@ -96,4 +97,10 @@ public abstract class ApptStorage implements Serializable{
 	public abstract void loadFromDisk(String filepath);
 	
 	public abstract Set<String> getAllUsers();
+	
+	public abstract User getUserView();
+	
+	public abstract void setUserView(User user);
+	
+	public abstract Vector<String> getAllUserIDs();
 }

@@ -21,6 +21,7 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Vector;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -410,6 +411,27 @@ public class CalGrid extends JFrame implements ActionListener {
 		});
 		Appmenu.add(mi);
 
+		JMenu userVision = new JMenu("User Vision");
+		Vector<String> userNames = controller.getAllUserID();
+		int i  = 0;
+		while (i< userNames.size()) {
+			mi = new JMenuItem(userNames.get(i));
+			mi.setActionCommand(userNames.get(i));
+			mi.addActionListener(new ActionListener(){
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					CalGrid.this.controller.setUserView(CalGrid.this.controller.getUser(e.getActionCommand()));
+					CalGrid.this.UpdateCal();
+				}
+			});
+			userVision.add(mi);
+			++i;
+		}
+		
+		Appmenu.add(userVision);
+		
 		return menuBar;
 	}
 

@@ -3,6 +3,7 @@ package hkust.cse.calendar.unit;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.LinkedList;
 
 import javax.swing.JFrame;
@@ -44,7 +45,7 @@ public class Appt implements Serializable {
 	
 	private int frequency;   		            // frequency
 	
-	private boolean publicity;					// check if could be seen by others
+	private boolean publicity;
 	
 	public Appt() {								// A default constructor used to set all the attribute to default values
 		mApptID = 0;
@@ -57,8 +58,8 @@ public class Appt implements Serializable {
 		waiting = new LinkedList<String>();
 		joinApptID = -1;
 		reminder = new Reminder();
+		location = null;
 		frequency = onetime;
-		publicity = false;
 	}
 
 	// Getter of the mTimeSpan
@@ -267,11 +268,19 @@ public class Appt implements Serializable {
 		return frequency;
 	}
 	
-	public void setPublicity(boolean a){
-		publicity = a;
+	public Timestamp getStartTime() {
+		return mTimeSpan.StartTime();
 	}
 	
-	public boolean getPublicity(){
-		return this.publicity;
+	public Timestamp getEndTime() {
+		return mTimeSpan.EndTime();	
+	}
+	
+	public void setPublicity(boolean b) {
+		publicity = b;
+	}
+	
+	public boolean getPublicity() {
+		return publicity;
 	}
 }

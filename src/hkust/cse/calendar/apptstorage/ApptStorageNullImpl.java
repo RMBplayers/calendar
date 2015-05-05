@@ -1,8 +1,10 @@
 package hkust.cse.calendar.apptstorage;
 
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Set;
 import java.util.Timer;
 import java.util.Vector;
 import java.util.TimerTask;
@@ -27,15 +29,6 @@ public class ApptStorageNullImpl extends ApptStorage implements Serializable{
 	public void setDefaultUser(User user) { 
 		defaultUser = user;
 	}
-	
-	public void setUserView(User user){
-		userView = user;
-	}
-	
-	public User getUserView(){
-		return this.userView;
-	}
-	
 	
 	@Override
 	public void setTime(Timestamp t) {
@@ -104,19 +97,18 @@ public class ApptStorageNullImpl extends ApptStorage implements Serializable{
 	public Appt[] RetrieveAppts(User entity, TimeSpan time) {
     
     //public Appt[] RetrieveAppts(User entity, TimeSpan time) {
-		String userID = userView.ID();
+        String userID = entity.ID();
         
         if (mAppts.containsKey(userID)) {
             Vector<Appt> Apptlist = mAppts.get(userID);
             Appt[] selectedAppts = new Appt[Apptlist.size()];
             int j = 0;
             for (int i = 0;i < Apptlist.size();i++) {
-            	// skip one appt if it is not allowed to bee seen
-               	if (userID != defaultUser.ID() && Apptlist.get(i).getPublicity() == false){
+            	if(!defaultUser.isAdmin() && userID != defaultUser.ID() && Apptlist.get(i).getPublicity() == false) {
             		continue;
             	}
             	
-            	// and < time + the length of a day in milliseconds
+                // and < time + the length of a day in milliseconds
                 long starttime = Apptlist.get(i).TimeSpan().StartTime().getTime();
                 long endtime = Apptlist.get(i).TimeSpan().EndTime().getTime();
                 if(Apptlist.get(i).getFrequency() == 0){
@@ -488,7 +480,7 @@ public class ApptStorageNullImpl extends ApptStorage implements Serializable{
 	}
 	
 	public void addUser(User user) {
-		users.put(user.ID(), user);
+		users.put(user.ID(), user);//System.out.println(users.toString());
 	}
 	
 	@Override
@@ -497,9 +489,11 @@ public class ApptStorageNullImpl extends ApptStorage implements Serializable{
 			FileOutputStream fs = new FileOutputStream(filepath);
 			ObjectOutputStream os = new ObjectOutputStream(fs);
 			os.writeObject(this);
+			//os.writeUnshared(this);
 			os.flush();
 			os.close();
 			fs.close();
+			
 			
 			FileInputStream ls = new FileInputStream(filepath);
 			ObjectInputStream ca = new ObjectInputStream(ls);
@@ -512,11 +506,6 @@ public class ApptStorageNullImpl extends ApptStorage implements Serializable{
 			e.printStackTrace();
 		}
 	}
-	
-	public Vector<String> getAllUserIDS(){
-		Vector<String> userIdList = new Vector<String>(this.users.keySet());
-		return userIdList;
-	}
 
 	@Override
 	public void loadFromDisk(String filepath){
@@ -528,7 +517,7 @@ public class ApptStorageNullImpl extends ApptStorage implements Serializable{
 
 			this.mAppts.putAll(A.mAppts);
 			this.users.putAll(A.users);
-		
+			//System.out.println(this.users.toString());
 			
 			os.close();
 		}catch(FileNotFoundException e){
@@ -536,6 +525,23 @@ public class ApptStorageNullImpl extends ApptStorage implements Serializable{
 		} catch(Exception e){
 			e.printStackTrace();
 		}
+	}
+	
+	public Set<String> getAllUsers() {
+		return users.keySet();
+	}
+	
+	public User getUserView(){
+		return this.userView;
+	}
+	
+	public void setUserView(User user){
+		userView = user;
+	}
+	
+	public Vector<String> getAllUserIDs() {
+		Vector<String> UserIDList = new Vector<String>(this.users.keySet());
+		return UserIDList;
 	}
 }
 

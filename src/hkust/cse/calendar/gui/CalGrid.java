@@ -88,7 +88,8 @@ public class CalGrid extends JFrame implements ActionListener {
 	private StyledDocument mem_doc = null;
 	private SimpleAttributeSet sab = null;
 	// private boolean isLogin = false;
-	private JMenu Appmenu = new JMenu("Appointment");;
+	private JMenu Appmenu = new JMenu("Appointment");
+	private JMenu AccountMenu = new JMenu("Account");
 
 	private final String[] holidays = {
 			"New Years Day\nSpring Festival\n",
@@ -402,43 +403,84 @@ public class CalGrid extends JFrame implements ActionListener {
 		});
 		Appmenu.add(mi);
 		
-		// change user view
-		JMenu userVision = new JMenu("UserVision");
-		// this part add all the user as a list
-		Vector<String> usernames = controller.getAllUserID();
-		int i = 0;
-		while (i < usernames.size()) {
-			mi = new JMenuItem(usernames.get(i));
-			mi.setActionCommand(usernames.get(i));
-			mi.addActionListener(new ActionListener() {
-				
+		mi = new JMenuItem("Show invitations");
+		mi.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				InviteDealer ohohoh = new InviteDealer(controller.getDefaultUser().getInvitions());
+			}			
+		});
+		Appmenu.add(mi);
+
+		JMenu userVision = new JMenu("User Vision");
+		Vector<String> userNames = controller.getAllUserID();
+		int i  = 0;
+		while (i< userNames.size()) {
+			mi = new JMenuItem(userNames.get(i));
+			mi.setActionCommand(userNames.get(i));
+			mi.addActionListener(new ActionListener(){
+
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
-					//System.out.println(e.getActionCommand());
 					CalGrid.this.controller.setUserView(CalGrid.this.controller.getUser(e.getActionCommand()));
-					//System.out.println(CalGrid.this.controller.getUser(e.getActionCommand()));
+					CalGrid.this.UpdateCal();
 				}
 			});
 			userVision.add(mi);
 			++i;
 		}
-		Appmenu.add(userVision);
-		// end this jmenu
 		
-		// for account management
-		JMenu Account = (JMenu) menuBar.add(new JMenu("ManageAccount"));
-		mi = new JMenuItem("Reset Account Information");
+		Appmenu.add(userVision);
+		
+		// the third menu is for account
+		menuBar.add(AccountMenu);
+		AccountMenu.setEnabled(true);
+		AccountMenu.setMnemonic('M');
+		AccountMenu.getAccessibleContext().setAccessibleDescription(
+				"Account Management");
+		
+		// add first item
+		mi = new JMenuItem("Edit Account Information");
 		mi.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				// part for adding user change
+				EditAccountInfoDialog a = new EditAccountInfoDialog(CalGrid.this);
 			}
 		});
-		Account.add(mi);
-		// end
+		AccountMenu.add(mi);
+		
+		// add second item view account
+		mi = new JMenuItem("View Account");
+		mi.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				AccountDetail a = new AccountDetail(CalGrid.this.controller.getDefaultUser());
+			}
+		});
+		AccountMenu.add(mi);
+		
+		// add third item
+		mi = new JMenuItem("Manage Normal User Account");
+		mi.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if(controller.getDefaultUser().isAdmin()){
+					System.out.println("you could manage but I haven't write the method");
+				}
+				else{
+					JOptionPane.showMessageDialog(CalGrid.this, "You are not the admin user! Can't do that!",
+							"Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		AccountMenu.add(mi);
 		
 		return menuBar;
 	}
@@ -610,7 +652,8 @@ public class CalGrid extends JFrame implements ActionListener {
 		end.setDate(g.getActualMaximum(GregorianCalendar.DAY_OF_MONTH));
 		end.setHours(23);
 		TimeSpan period = new TimeSpan(start, end);
-		return controller.RetrieveAppts(mCurrUser, period);
+		//modify here
+		return controller.RetrieveAppts(controller.getUserView(), period);
 	}
 
 	private void mousePressResponse() {
@@ -713,7 +756,7 @@ public class CalGrid extends JFrame implements ActionListener {
 		end.setSeconds(59);
 		
 		TimeSpan period = new TimeSpan(start, end);
-		return controller.RetrieveAppts(mCurrUser, period);
+		return controller.RetrieveAppts(this.controller.getUserView(), period);
 	}
 
 	public AppList getAppList() {

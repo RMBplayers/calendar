@@ -452,7 +452,19 @@ public class CalGrid extends JFrame implements ActionListener {
 		});
 		AccountMenu.add(mi);
 		
-		// add second item
+		// add second item view account
+		mi = new JMenuItem("View Account");
+		mi.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				AccountDetail a = new AccountDetail(CalGrid.this.controller.getDefaultUser());
+			}
+		});
+		AccountMenu.add(mi);
+		
+		// add third item
 		mi = new JMenuItem("Manage Normal User Account");
 		mi.addActionListener(new ActionListener() {
 			

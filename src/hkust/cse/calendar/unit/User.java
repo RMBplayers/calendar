@@ -58,14 +58,26 @@ public class User implements Serializable {
 		mFirstname = firstname;
 	}
 	
+	public String firstname(){
+		return mFirstname;
+	}
+	
     // Setter of the lastname
 	public void lastname(String lastname) {
 		mLastname = lastname;
 	}
 	
+	public String lastname(){
+		return mLastname;
+	}
+	
 	// Setter of the email
 	public void mEmail(String email) {
 		mEmail = email;
+	}
+	
+	public String mEmail() {
+		return mEmail;
 	}
 	
 	// Setter of admin

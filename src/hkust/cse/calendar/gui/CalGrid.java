@@ -88,7 +88,8 @@ public class CalGrid extends JFrame implements ActionListener {
 	private StyledDocument mem_doc = null;
 	private SimpleAttributeSet sab = null;
 	// private boolean isLogin = false;
-	private JMenu Appmenu = new JMenu("Appointment");;
+	private JMenu Appmenu = new JMenu("Appointment");
+	private JMenu AccountMenu = new JMenu("Account");
 
 	private final String[] holidays = {
 			"New Years Day\nSpring Festival\n",
@@ -431,6 +432,43 @@ public class CalGrid extends JFrame implements ActionListener {
 		}
 		
 		Appmenu.add(userVision);
+		
+		// the third menu is for account
+		menuBar.add(AccountMenu);
+		AccountMenu.setEnabled(true);
+		AccountMenu.setMnemonic('M');
+		AccountMenu.getAccessibleContext().setAccessibleDescription(
+				"Account Management");
+		
+		// add first item
+		mi = new JMenuItem("Edit Account Information");
+		mi.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				EditAccountInfoDialog a = new EditAccountInfoDialog(CalGrid.this);
+			}
+		});
+		AccountMenu.add(mi);
+		
+		// add second item
+		mi = new JMenuItem("Manage Normal User Account");
+		mi.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if(controller.getDefaultUser().isAdmin()){
+					System.out.println("you could manage but I haven't write the method");
+				}
+				else{
+					JOptionPane.showMessageDialog(CalGrid.this, "You are not the admin user! Can't do that!",
+							"Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		AccountMenu.add(mi);
 		
 		return menuBar;
 	}

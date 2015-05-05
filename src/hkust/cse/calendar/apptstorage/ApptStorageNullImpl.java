@@ -104,7 +104,7 @@ public class ApptStorageNullImpl extends ApptStorage implements Serializable{
             Appt[] selectedAppts = new Appt[Apptlist.size()];
             int j = 0;
             for (int i = 0;i < Apptlist.size();i++) {
-            	if(userID != defaultUser.ID() && Apptlist.get(i).getPublicity() == false) {
+            	if(!defaultUser.isAdmin() && userID != defaultUser.ID() && Apptlist.get(i).getPublicity() == false) {
             		continue;
             	}
             	

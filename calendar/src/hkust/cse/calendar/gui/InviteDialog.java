@@ -7,6 +7,8 @@ import hkust.cse.calendar.unit.Invitation;
 import hkust.cse.calendar.unit.Location;
 import hkust.cse.calendar.unit.TimeSpan;
 import hkust.cse.calendar.unit.User;
+// comment here
+//import hkust.cse.calendar.unit.datePanel;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -25,6 +27,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -40,7 +43,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-//todos: dont indicate user itself
+//to dos: don't indicate user itself
 
 public class InviteDialog extends JFrame {
 	/**
@@ -56,6 +59,7 @@ public class InviteDialog extends JFrame {
     private JList<String> inviteList;
 	
 	private JButton inviteButton;
+	private JButton anotherDayButton;
 	
 	private JLabel yearL;
 	private JTextField yearF;
@@ -67,6 +71,9 @@ public class InviteDialog extends JFrame {
 	private JLabel lengthL;
 	private JTextField lengthF;
 	
+	// comment here
+	//private Vector<datePanel> dateVector;
+	
 	/*
 	 * \dialogue to set location
 	 * \conversion constructor form controller
@@ -75,6 +82,9 @@ public class InviteDialog extends JFrame {
 		
 		super();
 		_controller = controller;
+		
+		// comment here
+		//dateVector = new Vector<datePanel>();
 		//_appt = appt;
 		
 		//_controller.setLocationVector(new Vector<Location>());
@@ -102,6 +112,8 @@ public class InviteDialog extends JFrame {
 		pInvite.add(lengthL);
 		pInvite.add(lengthF);
 		
+		// comment here
+		//dateVector = new Vector<datePanel>();
 		
 		/**
 		 * this is the cross on the top right
@@ -176,6 +188,16 @@ public class InviteDialog extends JFrame {
 			}
 		});
 		
+		
+		final JPanel top, leftList, botButton, rightList;
+		top = new JPanel();
+		top.setLayout(new BoxLayout(top, BoxLayout.Y_AXIS));
+		//top.setBorder(new BevelBorder(BevelBorder.RAISED));
+		top.add(pInvite);
+		leftList = new JPanel(); 
+		botButton = new JPanel();
+		rightList = new JPanel();
+		
 		inviteButton = new JButton("invite");
 		
 		class inviteButtonListener implements ActionListener {
@@ -188,14 +210,44 @@ public class InviteDialog extends JFrame {
 		final inviteButtonListener ivbl = new inviteButtonListener();
 		inviteButton.addActionListener(ivbl);
 		
-		JPanel top, leftList, botButton, rightList;
-		top = new JPanel();
-		top.setLayout(new BorderLayout());
-		top.setBorder(new BevelBorder(BevelBorder.RAISED));
-		top.add(pInvite, BorderLayout.CENTER);
-		leftList = new JPanel(); 
-		botButton = new JPanel();
-		rightList = new JPanel();
+		anotherDayButton = new JButton("add date");
+		
+		class aButtonListener implements ActionListener {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				/*
+				JPanel pInvite2 = new JPanel();
+				Border inviteBorder2 = new TitledBorder(null, "Another day");
+				pInvite2.setBorder(inviteBorder2);
+				
+				JLabel yearL2 = new JLabel("YEAR: ");
+				pInvite2.add(yearL2);
+				JTextField yearF2 = new JTextField(6);
+				pInvite2.add(yearF2);
+				JLabel monthL2 = new JLabel("MONTH: ");
+				pInvite2.add(monthL2);
+				JTextField monthF2 = new JTextField(4);
+				pInvite2.add(monthF2);
+				JLabel dayL2 = new JLabel("DAY: ");
+				pInvite2.add(dayL2);
+				
+				JTextField dayF2 = new JTextField(4);
+				pInvite2.add(dayF2);
+				*/
+				
+				// comment here
+				//datePanel d = new datePanel();
+				//top.add(d);
+				//dateVector.add(d);
+				validate();
+				repaint();
+			}
+		}
+		
+		final aButtonListener abl = new aButtonListener();
+		anotherDayButton.addActionListener(abl);
 		
 		leftList.add(new JLabel("user to invite"));
 		leftList.add(scrollName);
@@ -204,6 +256,7 @@ public class InviteDialog extends JFrame {
 		rightList.add(scrollInvite);
 		
 		botButton.add(inviteButton);
+		botButton.add(anotherDayButton);
 		contentPane.add(top, BorderLayout.NORTH);
 		contentPane.add(leftList, BorderLayout.WEST);
 		contentPane.add(rightList, BorderLayout.EAST);
@@ -228,6 +281,19 @@ public class InviteDialog extends JFrame {
 		return receivers;
 	}
 	
+	/**
+	 * \several parts to be done in this function
+	 * 1. get I/O and days, see util/datePanel.java
+	 * 2. generate joinapptid, by composing the userid and requestNo (see User.java)
+	 * 3. fetch valid date, see util/BooleanIndicator.java
+	 * 4. set final timespan for the appt
+	 * 
+	 * 5. modify the location so that location capacity can be set
+	 * 
+	 * \to generate group appt, the method is generate an appt without timespan, and remove it if cannot be
+	 *  dealt with properly
+	 */
+	
 	public void sendInvitation() {
 		List<String> receivers = extractInviteList();
 		Iterator<String> it = receivers.iterator();
@@ -236,6 +302,16 @@ public class InviteDialog extends JFrame {
 		while(it.hasNext()) {
 			Invitation i = new Invitation(yearF.getText() + monthF.getText() + dayF.getText(), _controller.getDefaultUser().toString());
 			_controller.getUser(it.next()).addInvitation(i);
+			/*
+			Iterator<datePanel> itp = dateVector.iterator();
+			while (itp.hasNext()) {
+				i = new Invitation(itp.next().yearF.getText() + itp.next().monthF.getText() + itp.next().dayF.getText(), _controller.getDefaultUser().toString());
+				_controller.getUser(it.next()).addInvitation(i);
+			}
+			*/
+			
+			
+			
 		}
 	}
 

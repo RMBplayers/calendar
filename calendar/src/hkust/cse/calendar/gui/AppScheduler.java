@@ -225,8 +225,10 @@ public class AppScheduler extends JDialog implements ActionListener,
 		JScrollPane detailScroll = new JScrollPane(detailArea);
 		detailPanel.add(detailScroll);
 
+		
 		JSplitPane pre_pDes = new JSplitPane(JSplitPane.VERTICAL_SPLIT, publicityPanel,
 				titleAndTextPanel);
+		
 		pDes = new JSplitPane(JSplitPane.VERTICAL_SPLIT, pre_pDes,
 				detailPanel);
 
@@ -308,7 +310,6 @@ public class AppScheduler extends JDialog implements ActionListener,
 			allDisableEdit();
 		}
 		pack();
-
 	}
 	
 	AppScheduler(String title, CalGrid cal, int selectedApptId) {
@@ -346,7 +347,7 @@ public class AppScheduler extends JDialog implements ActionListener,
 			
 			InviteDialog ivd = new InviteDialog(parent.controller);
 			ivd.setVisible(true);
-			repaint();
+			dispose();
 		}
 		// if click on "yes", then show the time schedule
 		else if ( e.getSource() == reminderRB1 ) {
@@ -520,7 +521,6 @@ public class AppScheduler extends JDialog implements ActionListener,
 				//System.out.print("it is true");
 				//
 			}
-			
 			// save the reminder to the appt
 			// warning: haven't handle invalid input
 			if (existReminder){

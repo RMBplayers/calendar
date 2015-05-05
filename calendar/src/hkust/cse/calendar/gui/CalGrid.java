@@ -6,7 +6,6 @@ import hkust.cse.calendar.unit.Appt;
 import hkust.cse.calendar.unit.TimeSpan;
 import hkust.cse.calendar.unit.User;
 
-import java.awt.Component;
 import java.awt.GraphicsEnvironment;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -48,8 +47,6 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
-
-//import sun.security.mscapi.KeyStore.MY;
 
 
 public class CalGrid extends JFrame implements ActionListener {
@@ -250,13 +247,6 @@ public class CalGrid extends JFrame implements ActionListener {
 		UpdateCal();
 		pack();				// sized the window to a preferred size
 		setVisible(true);	//set the window to be visible
-		
-		/*
-		if (!controller.checkMailBox()) {
-			JOptionPane.showMessageDialog(this, "please check your mailbox",
-					"HasMail", JOptionPane.DEFAULT_OPTION);
-		}
-		*/
 	}
 
 	public TableModel prepareTableModel() {
@@ -412,30 +402,6 @@ public class CalGrid extends JFrame implements ActionListener {
 		});
 		Appmenu.add(mi);
 		
-		// change user view
-		JMenu userVision = new JMenu("UserVision");
-		// this part add all the user as a list
-		Vector<String> usernames = controller.getAllUserID();
-		int i = 0;
-		while (i < usernames.size()) {
-			mi = new JMenuItem(usernames.get(i));
-			mi.setActionCommand(usernames.get(i));
-			mi.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-					//System.out.println(e.getActionCommand());
-					CalGrid.this.controller.setUserView(CalGrid.this.controller.getUser(e.getActionCommand()));
-					CalGrid.this.UpdateCal();
-					//System.out.println(CalGrid.this.controller.getUser(e.getActionCommand()));
-				}
-			});
-			userVision.add(mi);
-			++i;
-		}
-		Appmenu.add(userVision);
-		
 		mi = new JMenuItem("Show invitations");
 		mi.addActionListener(new ActionListener() {
 			@Override
@@ -444,32 +410,27 @@ public class CalGrid extends JFrame implements ActionListener {
 			}			
 		});
 		Appmenu.add(mi);
-		// end this jmenu
+
+		JMenu userVision = new JMenu("User Vision");
+		Vector<String> userNames = controller.getAllUserID();
+		int i  = 0;
+		while (i< userNames.size()) {
+			mi = new JMenuItem(userNames.get(i));
+			mi.setActionCommand(userNames.get(i));
+			mi.addActionListener(new ActionListener(){
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					CalGrid.this.controller.setUserView(CalGrid.this.controller.getUser(e.getActionCommand()));
+					CalGrid.this.UpdateCal();
+				}
+			});
+			userVision.add(mi);
+			++i;
+		}
 		
-		// for account management
-		JMenu Account = (JMenu) menuBar.add(new JMenu("Account"));
-		mi = new JMenuItem("Reset Account Information");
-		mi.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				// part for adding user change
-			}
-		});
-		Account.add(mi);
-		
-		mi = new JMenuItem("MailBox");
-		mi.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				MailInterface a = new MailInterface("",CalGrid.this);
-			}
-		});
-		Account.add(mi);
-		// end
+		Appmenu.add(userVision);
 		
 		return menuBar;
 	}
@@ -609,7 +570,7 @@ public class CalGrid extends JFrame implements ActionListener {
 						}
 					}
 				}
-			}			
+			}
 			TableModel t = prepareTableModel();
 			this.tableView.setModel(t);
 			this.tableView.repaint();
@@ -641,7 +602,8 @@ public class CalGrid extends JFrame implements ActionListener {
 		end.setDate(g.getActualMaximum(GregorianCalendar.DAY_OF_MONTH));
 		end.setHours(23);
 		TimeSpan period = new TimeSpan(start, end);
-		return controller.RetrieveAppts(mCurrUser, period);
+		//modify here
+		return controller.RetrieveAppts(controller.getUserView(), period);
 	}
 
 	private void mousePressResponse() {

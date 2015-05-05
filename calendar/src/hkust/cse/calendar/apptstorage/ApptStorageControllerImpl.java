@@ -2,7 +2,6 @@ package hkust.cse.calendar.apptstorage;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Collection;
 import java.util.Date;
 import java.util.Set;
 import java.util.Vector;
@@ -36,6 +35,10 @@ public class ApptStorageControllerImpl implements Serializable{
 		mApptStorage = storage;
 	}
 
+	public ApptStorage getApptStorage(){
+		return mApptStorage;
+	}
+	
 	/* Retrieve the Appt's in the storage for a specific user within the specific time span */
 	public Appt[] RetrieveAppts(User entity, TimeSpan time) {
 		return mApptStorage.RetrieveAppts(entity, time);
@@ -80,15 +83,6 @@ public class ApptStorageControllerImpl implements Serializable{
 		mApptStorage.setDefaultUser(user);
 	}
 	
-	/* set and get the userView */
-	public void setUserView(User user) {
-		mApptStorage.setUserView(user);
-	}
-	
-	public User getUserView() {
-		return mApptStorage.getUserView();
-	}
-	
 	public User getUser(String username) {
 		return mApptStorage.getUser(username);
 	}
@@ -122,14 +116,6 @@ public class ApptStorageControllerImpl implements Serializable{
 	
 	public void removeLocationFromVector(Location location) {
 		mApptStorage.removeLocationFromVector(location);
-	}
-	
-	/**
-	 * used to get all user ids for changing view
-	 * @return
-	 */
-	public Vector<String> getAllUserID(){
-		return mApptStorage.getAllUserIDS();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////	
 	public void setTime(Timestamp t) {
@@ -169,14 +155,16 @@ public class ApptStorageControllerImpl implements Serializable{
 		return mApptStorage.getAllUsers();
 	}
 	
-	// mailbox related
-	/*
-	public boolean checkMailBox(){
-		return mApptStorage.getDefaultUser().getMailBox().isEmpty();
+	// get user
+	public void setUserView(User user) {
+		mApptStorage.setUserView(user);
 	}
 	
-	public void sendMail(User s, User r, MailType t, String l, Collection<TimeSpan> c){
-		s.getMailBox().addMail(s, r, t, l, c);
+	public User getUserView() {
+		return mApptStorage.getUserView();
 	}
-	*/
-}	
+	
+	public Vector<String> getAllUserID() {
+		return mApptStorage.getAllUserIDs();
+	}
+}

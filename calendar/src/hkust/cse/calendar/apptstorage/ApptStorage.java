@@ -8,6 +8,7 @@ import hkust.cse.calendar.unit.UserTimer;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
@@ -22,8 +23,9 @@ public abstract class ApptStorage implements Serializable{
 	public HashMap<String,Vector<Appt>> mAppts;		// a hashmap to save every thing to it, write to memory by the memory based storage implementation	
 	public HashMap<String, User> users;           // save user info
 	public User defaultUser;	//a user object, now is single user mode without login
-	public User	userView;		//the view of user
+	public User userView;
 	public int mAssignedApptID;	//a global appointment ID for each appointment record
+	
 	/////////////////////////////////////////////////////////////////////////////////////////	
 	public Vector<Location> apptLocation; //can I initialize here?
 	
@@ -57,7 +59,6 @@ public abstract class ApptStorage implements Serializable{
 	mAppts = new HashMap<String,Vector<Appt>>();
 	apptLocation = new Vector<Location>(0);
 	users = new HashMap<String,User>();
-	userView = defaultUser;
 	}
 
 	public abstract void SaveAppt(Appt appt);	//abstract method to save an appointment record
@@ -75,10 +76,6 @@ public abstract class ApptStorage implements Serializable{
 	public abstract User getDefaultUser();		//abstract method to return the current user object
 	
 	public abstract void setDefaultUser(User user);      //abstract method to set the current user object
-	
-	public abstract User getUserView();
-	
-	public abstract void setUserView(User user);
 	
 	public abstract void LoadApptFromXml();		//abstract method to load appointment from xml reocrd into hash map
 	
@@ -98,11 +95,12 @@ public abstract class ApptStorage implements Serializable{
 	public abstract void saveToDisk(String filepath);
 
 	public abstract void loadFromDisk(String filepath);
-
-	public abstract Vector<String> getAllUserIDS();
-
-	public Set<String> getAllUsers() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+	public abstract Set<String> getAllUsers();
+	
+	public abstract User getUserView();
+	
+	public abstract void setUserView(User user);
+	
+	public abstract Vector<String> getAllUserIDs();
 }

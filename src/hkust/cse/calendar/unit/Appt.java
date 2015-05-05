@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,7 +30,7 @@ public class Appt implements Serializable {
 
 	private int mApptID;						// The appointment id
 	
-	private int joinApptID;						// The join appointment id
+	private String joinApptID;						// The join appointment id
 
 	private boolean isjoint;					// The appointment is a joint appointment
 	
@@ -56,7 +57,7 @@ public class Appt implements Serializable {
 		attend = new LinkedList<String>();
 		reject = new LinkedList<String>();
 		waiting = new LinkedList<String>();
-		joinApptID = -1;
+		joinApptID = "-1";
 		reminder = new Reminder();
 		location = null;
 		frequency = onetime;
@@ -83,11 +84,11 @@ public class Appt implements Serializable {
 	}
 	
 	// Getter of the join appointment id
-	public int getJoinID(){
+	public String getJoinID(){
 		return joinApptID;
 	}
 
-	public void setJoinID(int joinID){
+	public void setJoinID(String joinID){
 		this.joinApptID = joinID;
 	}
 	// Getter of the attend LinkedList<String>

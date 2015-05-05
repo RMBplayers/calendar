@@ -53,6 +53,7 @@ public class BooleanIndicator {
 		
 		Appt[] apptArray = controller.RetrieveAppts(user, new TimeSpan(t1, t2));
 		int length = apptArray.length;
+		
 		for (int i = 0; i<length; ++i) {
 			Timestamp temp2 = apptArray[i].getStartTime();
 			int i1 = (int) (temp1.getTime() - start.getTime())/(15*60*1000);
@@ -78,7 +79,10 @@ public class BooleanIndicator {
 	private void mergeWithOther(User user2) {
 		boolean[] arrayB = (new BooleanIndicator(user2, year, month, day)).getIndArray();
 		for (int i = 0; i<40; i++) {
-			indArray[i] = indArray[i] && arrayB[i];
+				/**
+				 * \this is a problematic part
+				 */
+				indArray[i] = indArray[i] && indArray[i];
 		}
 	}
 	
@@ -97,7 +101,7 @@ public class BooleanIndicator {
 			for (int j = i; j<i+blocks; ++j) {
 				temp = temp && indArray[j];
 			}
-			
+						
 			if (temp) {
 				Timestamp t1 = new Timestamp(begin + i*15*60*1000);
 				Timestamp t2 = new Timestamp(begin + (i+blocks)*15*60*1000);

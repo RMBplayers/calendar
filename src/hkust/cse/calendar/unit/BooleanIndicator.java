@@ -47,8 +47,8 @@ public class BooleanIndicator {
 	private void calculateForward() {
 		Timestamp start = new Timestamp((new GregorianCalendar(year, month, day, 8, 0, 0)).getTimeInMillis());
 		
-		Timestamp t1 = new Timestamp((new GregorianCalendar(year, month, day)).getTimeInMillis());
-		Timestamp t2 = new Timestamp((new GregorianCalendar(year, month, day+1)).getTimeInMillis());
+		Timestamp t1 = new Timestamp((new GregorianCalendar(year, month, day, 8, 0, 0)).getTimeInMillis());
+		Timestamp t2 = new Timestamp((new GregorianCalendar(year, month, day, 18, 0, 0)).getTimeInMillis());
 		Timestamp temp1 = start;
 		
 		Appt[] apptArray = controller.RetrieveAppts(user, new TimeSpan(t1, t2));
@@ -86,7 +86,6 @@ public class BooleanIndicator {
 		Iterator<String> it = names.iterator();
 		while (it.hasNext()) {
 			mergeWithOther(controller.getUser(it.next()));
-			it.remove();
 		}
 	}
 	

@@ -58,6 +58,7 @@ public class Appt implements Serializable {
 		waiting = new LinkedList<String>();
 		joinApptID = -1;
 		reminder = new Reminder();
+		location = null;
 		frequency = onetime;
 	}
 

@@ -108,7 +108,7 @@ public class InviteDialog extends JFrame {
 		pInvite.add(lengthL);
 		pInvite.add(lengthF);
 		
-		
+		dateVector = new Vector<datePanel>();
 		
 		/**
 		 * this is the cross on the top right
@@ -212,7 +212,7 @@ public class InviteDialog extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				
+				/*
 				JPanel pInvite2 = new JPanel();
 				Border inviteBorder2 = new TitledBorder(null, "Another day");
 				pInvite2.setBorder(inviteBorder2);
@@ -230,8 +230,11 @@ public class InviteDialog extends JFrame {
 				
 				JTextField dayF2 = new JTextField(4);
 				pInvite2.add(dayF2);
+				*/
 				
-				top.add(pInvite2);
+				datePanel d = new datePanel();
+				top.add(d);
+				dateVector.add(d);
 				validate();
 				repaint();
 			}
@@ -283,7 +286,7 @@ public class InviteDialog extends JFrame {
 			/*
 			Iterator<datePanel> itp = dateVector.iterator();
 			while (itp.hasNext()) {
-				Invitation i = new Invitation(itp.next().yearF.getText() + itp.next().monthF.getText() + itp.next().dayF.getText(), _controller.getDefaultUser().toString());
+				i = new Invitation(itp.next().yearF.getText() + itp.next().monthF.getText() + itp.next().dayF.getText(), _controller.getDefaultUser().toString());
 				_controller.getUser(it.next()).addInvitation(i);
 			}
 			*/

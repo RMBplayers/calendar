@@ -7,7 +7,8 @@ import hkust.cse.calendar.unit.Invitation;
 import hkust.cse.calendar.unit.Location;
 import hkust.cse.calendar.unit.TimeSpan;
 import hkust.cse.calendar.unit.User;
-import hkust.cse.calendar.unit.datePanel;
+// comment here
+//import hkust.cse.calendar.unit.datePanel;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -19,11 +20,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.Timestamp;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
@@ -72,12 +71,8 @@ public class InviteDialog extends JFrame {
 	private JLabel lengthL;
 	private JTextField lengthF;
 	
-	private Vector<datePanel> dateVector;
-	private Vector<Integer> yearArray;
-	private Vector<Integer> monthArray;
-	private Vector<Integer> dayArray;
-	private Vector<TimeSpan> timeSpans;
-	private datePanel d;
+	// comment here
+	//private Vector<datePanel> dateVector;
 	
 	/*
 	 * \dialogue to set location
@@ -87,7 +82,9 @@ public class InviteDialog extends JFrame {
 		
 		super();
 		_controller = controller;
-		dateVector = new Vector<datePanel>();
+		
+		// comment here
+		//dateVector = new Vector<datePanel>();
 		//_appt = appt;
 		
 		//_controller.setLocationVector(new Vector<Location>());
@@ -96,7 +93,7 @@ public class InviteDialog extends JFrame {
 		JPanel pInvite = new JPanel();
 		Border inviteBorder = new TitledBorder(null, "INVITE OTHERS");
 		pInvite.setBorder(inviteBorder);
-		/*
+		
 		yearL = new JLabel("YEAR: ");
 		pInvite.add(yearL);
 		yearF = new JTextField(6);
@@ -109,18 +106,14 @@ public class InviteDialog extends JFrame {
 		pInvite.add(dayL);
 		dayF = new JTextField(4);
 		pInvite.add(dayF);
-		*/
-		d = new datePanel();
-		pInvite.add(d);
-		dateVector.add(d);
+		
 		lengthL = new JLabel("LENGTH: ");
 		lengthF = new JTextField(4);
 		pInvite.add(lengthL);
 		pInvite.add(lengthF);
 		
-		dateVector = new Vector<datePanel>();
-		d = new datePanel();
-		timeSpans = new Vector<TimeSpan>();
+		// comment here
+		//dateVector = new Vector<datePanel>();
 		
 		/**
 		 * this is the cross on the top right
@@ -210,7 +203,7 @@ public class InviteDialog extends JFrame {
 		class inviteButtonListener implements ActionListener {
 		    @Override
 			public void actionPerformed(ActionEvent e) {
-		    	//sendInvitation();
+		    	sendInvitation();
 		    	dispose();
 			} 		
 		}
@@ -244,22 +237,10 @@ public class InviteDialog extends JFrame {
 				pInvite2.add(dayF2);
 				*/
 				
-				/**
-				 * \this part will be judging useful information
-				 * \need to show valid
-				 */
-				
-				validate();
-				if(d.yearF.getText() != "") {
-				
-					System.out.println(d.yearF.getText());
-					//yearArray.add(Integer.parseInt(d.yearF.getText()));
-					//monthArray.add(Integer.parseInt(d.monthF.getText()));
-					//dayArray.add(Integer.parseInt(d.dayF.getText()));
-				}
-				d = new datePanel();
-				top.add(d);
-				dateVector.add(d);
+				// comment here
+				//datePanel d = new datePanel();
+				//top.add(d);
+				//dateVector.add(d);
 				validate();
 				repaint();
 			}
@@ -290,29 +271,20 @@ public class InviteDialog extends JFrame {
 	
 	public void ActionPerformed(ActionEvent e) {
 		if (e.getSource() == inviteButton) {
-			/*while (!yearArray.isEmpty()) {
-				BooleanIndicator b = new BooleanIndicator(_controller.getDefaultUser(), yearArray.elementAt(1), monthArray.elementAt(1),
-						dayArray.elementAt(1));
-				timeSpans.addAll(b.result(Integer.parseInt(lengthF.getText())));
-			}*/
-			//open gui interface for select timeSpans
-			//sendInvitation();
+			sendInvitation();
 			dispose();
 		}
 	}
 	
-	public LinkedList<String> extractInviteList() {
-		LinkedList<String> receivers = new LinkedList<String>();
-		for (Enumeration<String> e = inviteModel.elements(); e.hasMoreElements();) {
-			receivers.add(inviteModel.elements().nextElement());
-		}
+	public List<String> extractInviteList() {
+		List<String> receivers = Collections.list(inviteModel.elements()); 
 		return receivers;
 	}
 	
 	/**
 	 * \several parts to be done in this function
-	 *\1. get I/O and days, see util/datePanel.java
-	 *\\2. generate joinapptid, by composing the userid and requestNo (see User.java)
+	 * 1. get I/O and days, see util/datePanel.java
+	 * 2. generate joinapptid, by composing the userid and requestNo (see User.java)
 	 * 3. fetch valid date, see util/BooleanIndicator.java
 	 * 4. set final timespan for the appt
 	 * 
@@ -323,16 +295,13 @@ public class InviteDialog extends JFrame {
 	 */
 	
 	public void sendInvitation() {
-		LinkedList<String> receivers = extractInviteList();
+		List<String> receivers = extractInviteList();
 		Iterator<String> it = receivers.iterator();
 		BooleanIndicator bid = new BooleanIndicator(_controller.getDefaultUser(), Integer.parseInt(yearF.getText()), Integer.parseInt(monthF.getText()),
 				Integer.parseInt(dayF.getText()));
-		Appt newAppt = new Appt();
-		newAppt.setWaitingList(receivers);
-		newAppt.setJoinID(_controller.getDefaultUser().toString()+Integer.toString(_controller.getDefaultUser().getRequestNo()));
-		//while(it.hasNext()) {
-			//Invitation i = new Invitation(yearF.getText() + monthF.getText() + dayF.getText(), _controller.getDefaultUser().toString());
-			//_controller.getUser(it.next()).addInvitation(i);
+		while(it.hasNext()) {
+			Invitation i = new Invitation(yearF.getText() + monthF.getText() + dayF.getText(), _controller.getDefaultUser().toString());
+			_controller.getUser(it.next()).addInvitation(i);
 			/*
 			Iterator<datePanel> itp = dateVector.iterator();
 			while (itp.hasNext()) {
@@ -343,7 +312,7 @@ public class InviteDialog extends JFrame {
 			
 			
 			
-		
+		}
 	}
 
 	protected void exit(int i) {

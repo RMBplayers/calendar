@@ -97,7 +97,7 @@ public class ApptStorageNullImpl extends ApptStorage implements Serializable{
 	public Appt[] RetrieveAppts(User entity, TimeSpan time) {
     
     //public Appt[] RetrieveAppts(User entity, TimeSpan time) {
-        String userID = defaultUser.ID();
+        String userID = entity.ID();
         
         if (mAppts.containsKey(userID)) {
             Vector<Appt> Apptlist = mAppts.get(userID);

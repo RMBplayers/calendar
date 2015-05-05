@@ -84,6 +84,7 @@ public class AppScheduler extends JDialog implements ActionListener,
 	
 	private JComboBox locationField;
 	private JComboBox frequencyField;
+	private JComboBox publicitySetter;
 	
 	private Appt NewAppt;
 	private Appt ModifiedAppt;
@@ -203,6 +204,17 @@ public class AppScheduler extends JDialog implements ActionListener,
 		frequencyField.addActionListener(this);
 		//finish of adding
 		
+		// add another line for set publicity
+		JPanel publicityPanel = new JPanel();
+		publicitySetter = new JComboBox<String>();
+		publicitySetter.addItem(new String("PRIVATE"));
+		publicitySetter.addItem(new String("PUBLIC"));
+		publicitySetter.addActionListener(this);
+		JLabel publicityLabel = new JLabel("Publicity");
+		publicityPanel.add(publicityLabel);
+		publicityPanel.add(publicitySetter);
+		// add finish
+		
 		detailPanel = new JPanel();
 		detailPanel.setLayout(new BorderLayout());
 		Border detailBorder = new TitledBorder(null, "Appointment Description");
@@ -213,7 +225,11 @@ public class AppScheduler extends JDialog implements ActionListener,
 		JScrollPane detailScroll = new JScrollPane(detailArea);
 		detailPanel.add(detailScroll);
 
-		pDes = new JSplitPane(JSplitPane.VERTICAL_SPLIT, titleAndTextPanel,
+		
+		JSplitPane pre_pDes = new JSplitPane(JSplitPane.VERTICAL_SPLIT, publicityPanel,
+				titleAndTextPanel);
+		
+		pDes = new JSplitPane(JSplitPane.VERTICAL_SPLIT, pre_pDes,
 				detailPanel);
 
 		top.add(pDes, BorderLayout.SOUTH);
@@ -495,6 +511,16 @@ public class AppScheduler extends JDialog implements ActionListener,
 			NewAppt.setInfo(detailArea.getText());
 			NewAppt.setLocation(locationField.getSelectedItem().toString());
 			
+			
+			// save the publicity
+			if (publicitySetter.getSelectedItem().toString().equals("PRIVATE")){
+				NewAppt.setPublicity(false);
+			}
+			else{
+				NewAppt.setPublicity(true);
+				//System.out.print("it is true");
+				//
+			}
 			// save the reminder to the appt
 			// warning: haven't handle invalid input
 			if (existReminder){

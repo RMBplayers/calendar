@@ -34,7 +34,7 @@ public class User implements Serializable {
 		mLastname = lastname;
 		mEmail = email;
 		admin = isAdmin;
-		requestNo = 0;
+		
 		invitations = new Vector<Invitation>();
 	}
 
@@ -84,10 +84,5 @@ public class User implements Serializable {
 	
 	public Vector<Invitation> getInvitions() {
 		return invitations;
-	}
-	
-	public int getRequestNo() { 
-		++requestNo;
-		return requestNo;
 	}
 }

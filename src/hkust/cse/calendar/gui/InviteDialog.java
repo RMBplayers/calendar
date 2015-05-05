@@ -275,6 +275,19 @@ public class InviteDialog extends JFrame {
 		return receivers;
 	}
 	
+	/**
+	 * \several parts to be done in this function
+	 * 1. get I/O and days, see util/datePanel.java
+	 * 2. generate joinapptid, by composing the userid and requestNo (see User.java)
+	 * 3. fetch valid date, see util/BooleanIndicator.java
+	 * 4. set final timespan for the appt
+	 * 
+	 * 5. modify the location so that location capacity can be set
+	 * 
+	 * \to generate group appt, the method is generate an appt without timespan, and remove it if cannot be
+	 *  dealt with properly
+	 */
+	
 	public void sendInvitation() {
 		List<String> receivers = extractInviteList();
 		Iterator<String> it = receivers.iterator();
@@ -290,6 +303,8 @@ public class InviteDialog extends JFrame {
 				_controller.getUser(it.next()).addInvitation(i);
 			}
 			*/
+			
+			
 			
 		}
 	}

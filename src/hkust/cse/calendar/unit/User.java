@@ -16,6 +16,9 @@ public class User implements Serializable {
 	private String mEmail;				   // email
 	private boolean admin;                 // User type
 	
+	private int requestNo;                 // increment every time user adds appt
+										   // compose of userid to constitute the joint
+	
 	private Vector<Invitation> invitations;
 	
 	// Getter of the user id

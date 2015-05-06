@@ -4,7 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -47,6 +49,8 @@ public class Appt implements Serializable {
 	
 	private boolean publicity;
 	
+	private Vector<TimeSpan> availableTime;
+	
 	public Appt() {								// A default constructor used to set all the attribute to default values
 		mApptID = 0;
 		mTimeSpan = null;
@@ -60,6 +64,7 @@ public class Appt implements Serializable {
 		reminder = new Reminder();
 		location = null;
 		frequency = onetime;
+		availableTime = new Vector<TimeSpan>();
 	}
 
 	// Getter of the mTimeSpan
@@ -282,5 +287,22 @@ public class Appt implements Serializable {
 	
 	public boolean getPublicity() {
 		return publicity;
+	}
+	
+	public void setAvailableTime(Vector<TimeSpan> t) {
+		availableTime = t;
+	}
+	
+	public Vector<TimeSpan> getAvailableTime() {
+		return availableTime;
+	}
+	
+	public void updateTime(Vector<TimeSpan> v2) {
+		Iterator<TimeSpan> it = availableTime.iterator();
+		while(it.hasNext()) {
+			if (!v2.contains(it.next())) {
+				it.remove();
+			}
+		}
 	}
 }

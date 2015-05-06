@@ -219,8 +219,8 @@ public class InviteDialog extends JFrame {
 		    		dayArray.add(tempDay);
 //		    		currentTimeSpans(Integer.parseInt(lengthF.getText()));
 				
-		    	
-		    		SelectTime s = new SelectTime(extractAllTimeSpans(extractInviteList(),Integer.parseInt(lengthF.getText())));
+		    		Appt newAppt = new Appt();
+		    		SelectTime s = new SelectTime(extractAllTimeSpans(extractInviteList(),getValidLength()), extractInviteList(), newAppt);
 		    		s.setVisible(true);
 		    	//selectTimeStamps();
 		    	//dispose();

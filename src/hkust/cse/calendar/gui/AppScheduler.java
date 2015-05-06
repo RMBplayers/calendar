@@ -344,7 +344,31 @@ public class AppScheduler extends JDialog implements ActionListener,
 			//check if proper set
 			//if()
 			
-			InviteDialog ivd = new InviteDialog(parent.controller);
+			Appt tempAppt = new Appt();
+			if (publicitySetter.getSelectedItem().toString().equals("PRIVATE")){
+				tempAppt.setPublicity(false);
+			}
+			else{
+				tempAppt.setPublicity(true);
+				//System.out.print("it is true");
+				//
+			}
+			
+			NewAppt.setTitle(titleField.getText());
+			NewAppt.setInfo(detailArea.getText());
+			NewAppt.setLocation(locationField.getSelectedItem().toString());
+			
+			
+			if(frequencyField.getSelectedIndex() == 0)
+				tempAppt.setFrequency(0);
+			else if(frequencyField.getSelectedIndex() == 1)
+				tempAppt.setFrequency(1);
+			else if(frequencyField.getSelectedIndex() == 2)
+				tempAppt.setFrequency(2);
+			else if(frequencyField.getSelectedIndex() == 3)
+				tempAppt.setFrequency(3);
+			
+			InviteDialog ivd = new InviteDialog(parent.controller, tempAppt);//add frequency here
 			ivd.setVisible(true);
 			dispose();
 		}

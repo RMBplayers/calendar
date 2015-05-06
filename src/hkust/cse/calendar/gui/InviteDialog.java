@@ -69,6 +69,8 @@ public class InviteDialog extends JFrame {
 	private JLabel dayL;
 	private JTextField dayF;
 	
+	private Appt tempAppt;
+	
 	private JLabel lengthL;
 	JTextField lengthF;
 	
@@ -81,12 +83,12 @@ public class InviteDialog extends JFrame {
 	 * \dialogue to set location
 	 * \conversion constructor form controller
 	 */
-	public InviteDialog(ApptStorageControllerImpl controller) {
+	public InviteDialog(ApptStorageControllerImpl controller, Appt appt) {
 		
 		super();
 		_controller = controller;
 		//_appt = appt;
-		
+		tempAppt = appt;
 		//_controller.setLocationVector(new Vector<Location>());
 	
 		Container contentPane = getContentPane();
@@ -219,8 +221,8 @@ public class InviteDialog extends JFrame {
 		    		dayArray.add(tempDay);
 //		    		currentTimeSpans(Integer.parseInt(lengthF.getText()));
 				
-		    		Appt newAppt = new Appt();
-		    		SelectTime s = new SelectTime(extractAllTimeSpans(extractInviteList(),getValidLength()), extractInviteList(), newAppt);
+		    		//Appt newAppt = new Appt();
+		    		SelectTime s = new SelectTime(extractAllTimeSpans(extractInviteList(),getValidLength()), extractInviteList(), tempAppt, _controller);
 		    		s.setVisible(true);
 		    	//selectTimeStamps();
 		    	//dispose();
@@ -367,9 +369,10 @@ public class InviteDialog extends JFrame {
 			Timestamp begin = new Timestamp(beginInMillisecond);
 			Timestamp end = new Timestamp(beginInMillisecond+lengthInMinutes*60*1000);
 			while (end.getTime() <= (new GregorianCalendar(tempYear, tempMonth, tempDay, 18, 0, 0)).getTimeInMillis()) {
-				Appt tempAppt = new Appt();
+				
 				TimeSpan t = new TimeSpan(begin, end);
 				tempAppt.setTimeSpan(t);
+				//tempAppt.set frequency
 				
 				if(!_controller.checkOverlap(_controller.getDefaultUser(),tempAppt)) {
 					answer.add(t);

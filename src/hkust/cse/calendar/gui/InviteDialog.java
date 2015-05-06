@@ -225,7 +225,7 @@ public class InviteDialog extends JFrame {
 		    		SelectTime s = new SelectTime(extractAllTimeSpans(extractInviteList(),getValidLength()), extractInviteList(), tempAppt, _controller);
 		    		s.setVisible(true);
 		    	//selectTimeStamps();
-		    	//dispose();
+		    	dispose();
 		    	}
 			} 		
 		}

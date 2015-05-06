@@ -133,11 +133,13 @@ public class SelectTime extends JFrame {
 				// TODO Auto-generated method stub
 				//String[] selectedTime = (String[]) timeBox.getSelectedObjects();
 				//USERTOBEINVITED.addInvitation(Appt appt, getTimeSlots()>)
-				Iterator<String> userIt = i.iterator();
-				while(userIt.hasNext()) {
-					controller.getUser(userIt.next());
-					//send is unimplemented
+				for (int j = 0; j < inviteList.size(); j++) {
+					User user = controller.getUser(inviteList.get(j));
+					user.addInvitation(appt,getTimeSlots());
+					controller.addUser(user);
 				}
+				dispose();
+				
 				
 				//System.out.println(getTimeSlots().size());
 			}
@@ -155,6 +157,7 @@ public class SelectTime extends JFrame {
 		setVisible(true);
 	}	
 	
+	// check null 
 	public Vector<TimeSpan> getTimeSlots() {
 		Iterator<JCheckBox> itCheck = checkBox.iterator();
 		Vector<TimeSpan> answer = new Vector<TimeSpan>();

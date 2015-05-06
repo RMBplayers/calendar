@@ -3,6 +3,7 @@ package hkust.cse.calendar.gui;
 import hkust.cse.calendar.Main.CalendarMain;
 import hkust.cse.calendar.apptstorage.ApptStorageControllerImpl;
 import hkust.cse.calendar.unit.Appt;
+import hkust.cse.calendar.unit.Invitation;
 import hkust.cse.calendar.unit.TimeSpan;
 import hkust.cse.calendar.unit.User;
 
@@ -244,6 +245,13 @@ public class CalGrid extends JFrame implements ActionListener {
 		initializeSystem(); // for you to add.
 		//mCurrUser = getCurrUser(); // totally meaningless code
 		Appmenu.setEnabled(true);
+		
+		// show pending message (invitation)
+//		for (int i = 0; i < mCurrUser.getInvitions().size(); i++) {
+//			Invitation inv = mCurrUser.getInvitions().get(i);
+//			SelectTime ohohoh = new SelectTime(inv.TimeSpan(),inv.getAppt(),controller);
+//		}
+		
 
 		UpdateCal();
 		pack();				// sized the window to a preferred size
@@ -407,7 +415,7 @@ public class CalGrid extends JFrame implements ActionListener {
 		mi.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				InviteDealer ohohoh = new InviteDealer(controller.getDefaultUser().getInvitions());
+//				InviteDealer ohohoh = new InviteDealer(controller.getDefaultUser().getInvitions());
 			}			
 		});
 		Appmenu.add(mi);

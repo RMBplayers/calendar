@@ -90,8 +90,14 @@ public class User implements Serializable {
 		return admin;
 	}
 	
-	public void addInvitation(Invitation i) {
-		invitations.add(i);
+	public void addInvitation(Appt appt, Vector<TimeSpan> timeslots) {
+		Invitation newInvitation = new Invitation(appt,timeslots);
+		System.out.println(mID);
+		System.out.println("begin");
+		System.out.println(invitations.size());
+		invitations.add(newInvitation);
+		System.out.println(invitations.size());
+		System.out.println("end");
 	}
 	
 	public Vector<Invitation> getInvitions() {

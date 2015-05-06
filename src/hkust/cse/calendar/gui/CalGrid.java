@@ -247,10 +247,10 @@ public class CalGrid extends JFrame implements ActionListener {
 		Appmenu.setEnabled(true);
 		
 		// show pending message (invitation)
-//		for (int i = 0; i < mCurrUser.getInvitions().size(); i++) {
-//			Invitation inv = mCurrUser.getInvitions().get(i);
-//			SelectTime ohohoh = new SelectTime(inv.TimeSpan(),inv.getAppt(),controller);
-//		}
+		for (int i = 0; i < mCurrUser.getInvitions().size(); i++) {
+			Invitation inv = mCurrUser.getInvitions().get(i);
+			SelectTime ohohoh = new SelectTime(inv.TimeSpan(),inv.getAppt(),controller);
+		}
 		
 
 		UpdateCal();

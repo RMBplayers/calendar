@@ -236,7 +236,6 @@ public class AppScheduler extends JDialog implements ActionListener,
 
 		if (NewAppt != null) {
 			detailArea.setText(NewAppt.getInfo());
-
 		}
 		
 		JPanel panel2 = new JPanel();

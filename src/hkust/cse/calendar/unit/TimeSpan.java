@@ -72,4 +72,8 @@ public class TimeSpan implements Serializable {
 	public void EndTime(Timestamp e) {
 		mEndTime = e;
 	}
+	
+	public String toString() {
+		return (mStartTime + " - " + mEndTime);
+	}
 }

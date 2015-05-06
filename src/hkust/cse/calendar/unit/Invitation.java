@@ -1,6 +1,9 @@
 package hkust.cse.calendar.unit;
 
+import hkust.cse.calendar.apptstorage.ApptStorageControllerImpl;
+
 import java.io.Serializable;
+import java.util.Vector;
 
 
 /**
@@ -9,31 +12,29 @@ import java.io.Serializable;
  * a invitation that can be responded
  */
 public class Invitation implements Serializable {
-	private int status;
-	private String information;
-	private String initiator;
+	private int joinApptID;   //each invitation can only have one id
+	private String UserID;    //each invitation to on user so that can be deleted easily
+	private ApptStorageControllerImpl controller;
 	
-	//1-waiting, 2-approve, 0-reject
-	
-	public Invitation(String s, String i) {
-		information = s;
-		initiator = i;
-		status = 1;
+	public Invitation(int apptid, String userid) {
+		joinApptID = apptid;
+		UserID = userid;
 	}
 	
-	public void Approve() {
-		status = 2;
+	public void joinAppt() {
+		
 	}
 	
-	public void Reject() {
-		status = 0;
+	public void rejectAppt() {
+		//
+	}
+	/*
+	public Vector<TimeSpan> selectTime() {
+		;
 	}
 	
 	public String getInformation() {
-		return information;
+		//get the information ;
 	}
-	
-	public String getInitiator() {
-		return initiator;
-	}
+	*/
 }

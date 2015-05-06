@@ -33,6 +33,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -69,7 +70,7 @@ public class InviteDialog extends JFrame {
 	private JTextField dayF;
 	
 	private JLabel lengthL;
-	private JTextField lengthF;
+	JTextField lengthF;
 	
 	private Vector<Integer> yearArray;
 	private Vector<Integer> monthArray;
@@ -141,6 +142,7 @@ public class InviteDialog extends JFrame {
 	    	userNameListModel.addElement(it.next());
 	    	//it.remove();
 		}
+	    userNameListModel.removeElement(_controller.getDefaultUser().toString());
 	    
 	    JScrollPane scrollName = new JScrollPane();
 	    JScrollPane scrollInvite = new JScrollPane();
@@ -207,16 +209,22 @@ public class InviteDialog extends JFrame {
 		class inviteButtonListener implements ActionListener {
 		    @Override
 			public void actionPerformed(ActionEvent e) {
+		    	if ((getValidDate()!=null) && (getValidLength() != 0) && (extractInviteList() != null)) {
+		    		int tempYear =  getValidDate()[0];
+		    		int tempMonth = getValidDate()[1];
+		    		int tempDay = getValidDate()[2];
 		    	
-		    	yearArray.add(Integer.parseInt(yearF.getText()));
-				monthArray.add(Integer.parseInt(monthF.getText()) - 1);
-				dayArray.add(Integer.parseInt(dayF.getText()));
-//		    	currentTimeSpans(Integer.parseInt(lengthF.getText()));
+		    		yearArray.add(tempYear);
+		    		monthArray.add(tempMonth);
+		    		dayArray.add(tempDay);
+//		    		currentTimeSpans(Integer.parseInt(lengthF.getText()));
 				
-		    	extractAllTimeSpans(extractInviteList(),Integer.parseInt(lengthF.getText()));
-				
+		    	
+		    		SelectTime s = new SelectTime(extractAllTimeSpans(extractInviteList(),Integer.parseInt(lengthF.getText())));
+		    		s.setVisible(true);
 		    	//selectTimeStamps();
-		    	dispose();
+		    	//dispose();
+		    	}
 			} 		
 		}
 		final inviteButtonListener ivbl = new inviteButtonListener();
@@ -254,11 +262,15 @@ public class InviteDialog extends JFrame {
 				 * \need to show valid
 				 */
 				
-				yearArray.add(Integer.parseInt(yearF.getText()));
-				monthArray.add(Integer.parseInt(monthF.getText()) - 1);
-				dayArray.add(Integer.parseInt(dayF.getText()));
+				int date[] = getValidDate();
+				
+				yearArray.add(date[0]);
+				monthArray.add(date[1]);
+				dayArray.add(date[2]);
 				
 				userNameList.setEnabled(false);
+				
+				lengthF.setEnabled(false);
 				
 				yearF.setText(null);
 				monthF.setText(null);
@@ -291,12 +303,56 @@ public class InviteDialog extends JFrame {
 		setVisible(true);
 	}
 	
+	private int[] getValidDate() {
+
+		int[] date = new int[3];
+		date[0] = Utility.getNumber(yearF.getText());
+		date[1] = Utility.getNumber(monthF.getText());
+		if (date[0] < 1980 || date[0] > 2100) {
+			JOptionPane.showMessageDialog(this, "Please input proper year",
+					"Input Error", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		if (date[1] <= 0 || date[1] > 12) {
+			JOptionPane.showMessageDialog(this, "Please input proper month",
+					"Input Error", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+
+		date[2] = Utility.getNumber(dayF.getText());
+		int monthDay = CalGrid.monthDays[date[1] - 1];
+		if (date[1] == 2) {
+			GregorianCalendar c = new GregorianCalendar();
+			if (c.isLeapYear(date[0]))
+				monthDay = 29;
+		}
+		if (date[2] <= 0 || date[2] > monthDay) {
+			JOptionPane.showMessageDialog(this,
+			"Please input proper month day", "Input Error",
+			JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		return date;
+	}
+	
+	private int getValidLength() {
+		int length = Utility.getNumber(lengthF.getText());
+		if ((length <= 0) || (length % 15 != 0)) {
+			JOptionPane.showMessageDialog(this,
+					"Please input valid time length.", "Input Error",
+					JOptionPane.ERROR_MESSAGE);
+			return 0;
+		} else return length;
+	}
+	
 	public LinkedList<String> extractInviteList() {
 		LinkedList<String> receivers = new LinkedList<String>();
 		for (int i = 0; i < inviteModel.size(); i++) {
 			receivers.add(inviteModel.get(i));
 		}
-		return receivers;
+		if (receivers.size() == 0) {
+			return null;
+		} else return receivers;
 	}
 	
 	public Vector<TimeSpan> currentTimeSpans(int lengthInMinutes) {

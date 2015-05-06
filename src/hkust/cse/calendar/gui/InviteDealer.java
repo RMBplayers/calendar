@@ -47,7 +47,7 @@ public class InviteDealer extends JFrame {
 		Border inviteBorder = new TitledBorder(null, "Invite");
 		pInvite.setBorder(inviteBorder);
 		
-		information = new JLabel(it.next().getInformation());// + it.next().getInitiator());
+		//information = new JLabel(it.next().getInformation());// + it.next().getInitiator());
 		pInvite.add(information);
 		length = new JLabel("1");
 		

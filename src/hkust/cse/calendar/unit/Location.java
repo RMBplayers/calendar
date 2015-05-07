@@ -11,14 +11,24 @@ import java.io.Serializable;
  */
 public class Location implements Serializable{
 	private String locationName;
+	private int capacity;
 	
 	//*conversion constructor 
 	public Location(String name) {
 		locationName = name;
 	}
 	
+	public Location(String name, int cap) {
+		locationName = name;
+		capacity = cap;
+	}
+	
 	public String getLocationName() {
 		return locationName;
+	}
+	
+	public int getCapacity() {
+		return capacity;
 	}
 	
 	public void setLocationName(String name) {

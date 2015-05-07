@@ -117,22 +117,23 @@ public class LoginDialog extends JFrame implements ActionListener
 			///////////////////
 			
 			////////////////////
-			// lizhiahng tou tou tou
+			// lizhiahng： tou tou tou
 			///////////////////
 			
 			
 			ApptStorageControllerImpl controller = new ApptStorageControllerImpl(new ApptStorageNullImpl());
 			controller.loadFromDisk("records.txt");
+
 			if (!controller.verifyUser(username,passcode)) {
 				JOptionPane.showMessageDialog(this, "please check your username and password",
 						"Input Error", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			else {
-				
 				User user = controller.getUser(username);
 				controller.setDefaultUser(user);
 				controller.setUserView(user);
+				//controller.loadFromDisk("records.txt");
 				CalGrid grid = new CalGrid(controller);
 				setVisible( false );
 			}
@@ -241,8 +242,8 @@ public class LoginDialog extends JFrame implements ActionListener
 			else {
 				User newUser = new User(username,passWord1,firstName,lastName,Email,administrator.isSelected());
 				controller.addUser(newUser);
-				controller.setUserView(newUser);
 				controller.setDefaultUser(newUser);
+				controller.setUserView(newUser);
 				CalGrid grid = new CalGrid(controller);
 				setVisible( false );
 				

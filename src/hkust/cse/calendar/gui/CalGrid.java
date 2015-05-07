@@ -3,10 +3,10 @@ package hkust.cse.calendar.gui;
 import hkust.cse.calendar.Main.CalendarMain;
 import hkust.cse.calendar.apptstorage.ApptStorageControllerImpl;
 import hkust.cse.calendar.unit.Appt;
+import hkust.cse.calendar.unit.Invitation;
 import hkust.cse.calendar.unit.TimeSpan;
 import hkust.cse.calendar.unit.User;
 
-import java.awt.Component;
 import java.awt.GraphicsEnvironment;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -49,8 +49,6 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-//import sun.security.mscapi.KeyStore.MY;
-
 
 public class CalGrid extends JFrame implements ActionListener {
 
@@ -91,7 +89,8 @@ public class CalGrid extends JFrame implements ActionListener {
 	private StyledDocument mem_doc = null;
 	private SimpleAttributeSet sab = null;
 	// private boolean isLogin = false;
-	private JMenu Appmenu = new JMenu("Appointment");;
+	private JMenu Appmenu = new JMenu("Appointment");
+	private JMenu AccountMenu = new JMenu("Account");
 
 	private final String[] holidays = {
 			"New Years Day\nSpring Festival\n",
@@ -246,17 +245,17 @@ public class CalGrid extends JFrame implements ActionListener {
 		initializeSystem(); // for you to add.
 		//mCurrUser = getCurrUser(); // totally meaningless code
 		Appmenu.setEnabled(true);
+		
+		// show pending message (invitation)
+		for (int i = 0; i < mCurrUser.getInvitions().size(); i++) {
+			Invitation inv = mCurrUser.getInvitions().get(i);
+			SelectTime ohohoh = new SelectTime(inv.TimeSpan(),inv.getAppt(),controller);
+		}
+		
 
 		UpdateCal();
 		pack();				// sized the window to a preferred size
 		setVisible(true);	//set the window to be visible
-		
-		/*
-		if (!controller.checkMailBox()) {
-			JOptionPane.showMessageDialog(this, "please check your mailbox",
-					"HasMail", JOptionPane.DEFAULT_OPTION);
-		}
-		*/
 	}
 
 	public TableModel prepareTableModel() {
@@ -398,8 +397,14 @@ public class CalGrid extends JFrame implements ActionListener {
 		
 		mi = new JMenuItem("Manage Locations");
 		mi.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				LocationsDialog dlg = new LocationsDialog(controller);
+			public void actionPerformed(ActionEvent e) {
+				if (controller.getDefaultUser().isAdmin()){
+					LocationsDialog dlg = new LocationsDialog(controller);
+				}
+				else{
+					JOptionPane.showMessageDialog(CalGrid.this, "You are not administor. Can't do that"
+							, "Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		Appmenu.add(mi);
@@ -412,55 +417,85 @@ public class CalGrid extends JFrame implements ActionListener {
 		});
 		Appmenu.add(mi);
 		
-		// change user view
-		JMenu userVision = new JMenu("UserVision");
-		// this part add all the user as a list
-		Vector<String> usernames = controller.getAllUserID();
-		int i = 0;
-		while (i < usernames.size()) {
-			mi = new JMenuItem(usernames.get(i));
-			mi.setActionCommand(usernames.get(i));
-			mi.addActionListener(new ActionListener() {
-				
+		mi = new JMenuItem("Show invitations");
+		mi.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+//				InviteDealer ohohoh = new InviteDealer(controller.getDefaultUser().getInvitions());
+			}			
+		});
+		Appmenu.add(mi);
+
+		JMenu userVision = new JMenu("User Vision");
+		Vector<String> userNames = controller.getAllUserID();
+		int i  = 0;
+		while (i< userNames.size()) {
+			mi = new JMenuItem(userNames.get(i));
+			mi.setActionCommand(userNames.get(i));
+			mi.addActionListener(new ActionListener(){
+
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
-					//System.out.println(e.getActionCommand());
 					CalGrid.this.controller.setUserView(CalGrid.this.controller.getUser(e.getActionCommand()));
 					CalGrid.this.UpdateCal();
-					//System.out.println(CalGrid.this.controller.getUser(e.getActionCommand()));
 				}
 			});
 			userVision.add(mi);
 			++i;
 		}
+		
 		Appmenu.add(userVision);
-		// end this jmenu
 		
-		// for account management
-		JMenu Account = (JMenu) menuBar.add(new JMenu("Account"));
-		mi = new JMenuItem("Reset Account Information");
+		// the third menu is for account
+		menuBar.add(AccountMenu);
+		AccountMenu.setEnabled(true);
+		AccountMenu.setMnemonic('M');
+		AccountMenu.getAccessibleContext().setAccessibleDescription(
+				"Account Management");
+		
+		// add first item
+		mi = new JMenuItem("Edit Account Information");
 		mi.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				// part for adding user change
+				EditAccountInfoDialog a = new EditAccountInfoDialog(CalGrid.this.controller.getDefaultUser());
 			}
 		});
-		Account.add(mi);
+		AccountMenu.add(mi);
 		
-		mi = new JMenuItem("MailBox");
+		// add second item view account
+		mi = new JMenuItem("View Account");
 		mi.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				MailInterface a = new MailInterface("",CalGrid.this);
+				AccountDetail a = new AccountDetail(CalGrid.this.controller.getDefaultUser());
 			}
 		});
-		Account.add(mi);
-		// end
+		AccountMenu.add(mi);
+		
+		// add third item
+		mi = new JMenuItem("Manage Normal User Account");
+		mi.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if(controller.getDefaultUser().isAdmin()){
+					ManageNormalUserDialog a = new ManageNormalUserDialog(CalGrid.this, "NormalUserList");
+					System.out.println("you could manage but I haven't write the method");
+				}
+				else{
+					JOptionPane.showMessageDialog(CalGrid.this, "You are not the admin user! Can't do that!",
+							"Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		AccountMenu.add(mi);
 		
 		return menuBar;
 	}
@@ -600,7 +635,7 @@ public class CalGrid extends JFrame implements ActionListener {
 						}
 					}
 				}
-			}			
+			}
 			TableModel t = prepareTableModel();
 			this.tableView.setModel(t);
 			this.tableView.repaint();
@@ -632,7 +667,8 @@ public class CalGrid extends JFrame implements ActionListener {
 		end.setDate(g.getActualMaximum(GregorianCalendar.DAY_OF_MONTH));
 		end.setHours(23);
 		TimeSpan period = new TimeSpan(start, end);
-		return controller.RetrieveAppts(mCurrUser, period);
+		//modify here
+		return controller.RetrieveAppts(controller.getUserView(), period, true);
 	}
 
 	private void mousePressResponse() {
@@ -735,7 +771,7 @@ public class CalGrid extends JFrame implements ActionListener {
 		end.setSeconds(59);
 		
 		TimeSpan period = new TimeSpan(start, end);
-		return controller.RetrieveAppts(this.controller.getUserView(), period);
+		return controller.RetrieveAppts(this.controller.getUserView(), period, true);
 	}
 
 	public AppList getAppList() {

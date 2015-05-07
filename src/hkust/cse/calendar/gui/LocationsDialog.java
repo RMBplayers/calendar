@@ -41,6 +41,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import java.lang.Math;
+
 public class LocationsDialog extends JFrame{
 	
 	private static final long serialVerisonID = 1L;
@@ -50,11 +52,16 @@ public class LocationsDialog extends JFrame{
 	 */
 	private ApptStorageControllerImpl _controller;
 	
+	private JLabel info;
+	
 	private DefaultListModel<Location> listModel;
 	private JList<Location> list; //what is this?
 	private JTextField locationNameText;
+	private JTextField capacityText;
     private DefaultListModel<String> nameListModel; // a name list to store name map
+    //private DefaultListModel<Integer> capacityListModel;
     private JList<String> nameList;
+    //private JList<Integer> capacityList;
     private HashMap<String, Location> nameToLocation;
 	
 	private JButton addButton;
@@ -87,13 +94,15 @@ public class LocationsDialog extends JFrame{
 		nameListModel = new DefaultListModel<String>();
 		listModel = new DefaultListModel<Location>();
 		nameToLocation = new HashMap<String, Location>();
-		Vector<Location> curVector = _controller.getLocationVector();
+		Vector<Location> curVector = _controller.getLocationList();
 		if (curVector.size() != 0) {
 			for (int i = 0; i < curVector.size(); ++i) {
 				Location tempLocation = curVector.get(i);
+				int capacity = tempLocation.getCapacity();
 				listModel.addElement(tempLocation);
+				String loactionWithCapacity = tempLocation.getLocationName() +" (" + capacity +")";
 				String tempName = tempLocation.getLocationName();
-				nameListModel.addElement(tempName);
+				nameListModel.addElement(loactionWithCapacity);
 				nameToLocation.put(tempName, tempLocation);
 			}
 		}
@@ -138,30 +147,52 @@ public class LocationsDialog extends JFrame{
 		 */
 		class addButtonListener implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
+				boolean isValid = false;
 				String locationName = locationNameText.getText();
-					if (!nameListModel.contains(locationName)) {
-						Location userDefinedLocation = new Location(locationName);
-						nameListModel.addElement(locationName);
+				int capacity = 0;//Integer.parseInt(capacityText.getText());
+				//NumberUtils.isDigit(capacityText.getText());
+				try{
+					capacity = Integer.parseInt(capacityText.getText());
+					if(capacity <= 0)
+						JOptionPane.showMessageDialog(null, "Please input valid capacity",
+								"Input Error", JOptionPane.ERROR_MESSAGE);
+					else
+						isValid = true;
+				}catch(Exception ex){
+					JOptionPane.showMessageDialog(null, "Please input valid capacity",
+						"Input Error", JOptionPane.ERROR_MESSAGE);
+				}
+				
+					if (!nameListModel.contains(locationName) && isValid) {
+						Location userDefinedLocation = new Location(locationName, capacity);
+						_controller.getApptStorage().locationList.add(userDefinedLocation);
+						String loactionWithCapacity = locationName +" (" + capacity +")";
+						nameListModel.addElement(loactionWithCapacity);
+						//capacityListModel.addElement(capacity);
 						nameToLocation.put(locationName, userDefinedLocation);
 						listModel.addElement(userDefinedLocation);
 						_controller.addLocationToVector(userDefinedLocation);
 				}
 			}
 		}
-		final addButtonListener addbl = new addButtonListener();	
-		
+		final addButtonListener addbl = new addButtonListener();
 		/**
 		 * similar to addButtonListener
 		 */
 		class removeButtonListener implements ActionListener {
 			public void actionPerformed(ActionEvent e){
 				String locationName = locationNameText.getText();
+				//int capacity = Integer.parseInt(capacityText.getText());
 				if (nameListModel.contains(locationName)) {
 					Location locationToDelete = nameToLocation.get(locationName);
+					_controller.getApptStorage().locationList.remove(locationToDelete);
+					//int capacity = locationToDelete.getCapacity();
 					nameListModel.removeElement(locationName);
+					//capacityListModel.removeElement(capacity);
 					nameToLocation.remove(locationName);
 					listModel.removeElement(locationToDelete);
 					nameList.clearSelection();
+					//capacityList.clearSelection();
 					_controller.removeLocationFromVector(locationToDelete);
 				}
 			}
@@ -172,21 +203,28 @@ public class LocationsDialog extends JFrame{
 		//center on the contentPane
 		JPanel top, bottom, center;
 		top = new JPanel();
-		top.setLayout(new FlowLayout(FlowLayout.LEFT));
-		top.add(nameList);
+		top.setLayout(new BorderLayout());
+		info = new JLabel("Location Name (Capacity)");
+		contentPane.add(info);
+		top.add(info,BorderLayout.NORTH);
+		top.add(nameList,BorderLayout.SOUTH);
+		//top.add(capacityList);
 		
-		locationNameText = new JTextField(20);
+		locationNameText = new JTextField("Enter Location Name",15);
+		capacityText = new JTextField("Enter Capacity",15);
 		addButton = new JButton("add");
 		removeButton = new JButton("remove");
-
+		
 		bottom = new JPanel();
 		
 		addButton.addActionListener(addbl);
 		removeButton.addActionListener(removebl);
 		
 		bottom.add(locationNameText);
+		bottom.add(capacityText);
 		bottom.add(addButton);
 		bottom.add(removeButton);
+
 		
 		
 		center = new JPanel(new BorderLayout());

@@ -1,8 +1,10 @@
 package hkust.cse.calendar.apptstorage;
 
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Set;
 import java.util.Timer;
 import java.util.Vector;
 import java.util.TimerTask;
@@ -28,15 +30,6 @@ public class ApptStorageNullImpl extends ApptStorage implements Serializable{
 		defaultUser = user;
 	}
 	
-	public void setUserView(User user){
-		userView = user;
-	}
-	
-	public User getUserView(){
-		return this.userView;
-	}
-	
-	
 	@Override
 	public void setTime(Timestamp t) {
 		newTime.setTime(t);
@@ -57,6 +50,11 @@ public class ApptStorageNullImpl extends ApptStorage implements Serializable{
 		return apptLocation;
 	}
 
+    @Override
+	public Vector<Location> getLocationList() {
+		return locationList;
+	}
+	
 	@Override
 	public void setLocationVector(Vector<Location> locationVector) {
 		apptLocation = locationVector;
@@ -104,19 +102,14 @@ public class ApptStorageNullImpl extends ApptStorage implements Serializable{
 	public Appt[] RetrieveAppts(User entity, TimeSpan time) {
     
     //public Appt[] RetrieveAppts(User entity, TimeSpan time) {
-		String userID = entity.ID();
+        String userID = entity.ID();
         
         if (mAppts.containsKey(userID)) {
             Vector<Appt> Apptlist = mAppts.get(userID);
             Appt[] selectedAppts = new Appt[Apptlist.size()];
             int j = 0;
-            for (int i = 0;i < Apptlist.size();i++) {
-            	// skip one appt if it is not allowed to bee seen
-               	if (userID != defaultUser.ID() && Apptlist.get(i).getPublicity() == false){
-            		continue;
-            	}
-            	
-            	// and < time + the length of a day in milliseconds
+            for (int i = 0;i < Apptlist.size();i++) {            	
+                // and < time + the length of a day in milliseconds
                 long starttime = Apptlist.get(i).TimeSpan().StartTime().getTime();
                 long endtime = Apptlist.get(i).TimeSpan().EndTime().getTime();
                 if(Apptlist.get(i).getFrequency() == 0){
@@ -223,6 +216,123 @@ public class ApptStorageNullImpl extends ApptStorage implements Serializable{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public Appt[] RetrieveAppts(User entity, TimeSpan time, boolean b) {
+	    
+	    //public Appt[] RetrieveAppts(User entity, TimeSpan time) {
+	        String userID = entity.ID();
+	        
+	        if (mAppts.containsKey(userID)) {
+	            Vector<Appt> Apptlist = mAppts.get(userID);
+	            Appt[] selectedAppts = new Appt[Apptlist.size()];
+	            int j = 0;
+	            for (int i = 0;i < Apptlist.size();i++) {
+	            	if(!defaultUser.isAdmin() && userID != defaultUser.ID() && Apptlist.get(i).getPublicity() == false) {
+	            		continue;
+	            	}
+	            	
+	                // and < time + the length of a day in milliseconds
+	                long starttime = Apptlist.get(i).TimeSpan().StartTime().getTime();
+	                long endtime = Apptlist.get(i).TimeSpan().EndTime().getTime();
+	                if(Apptlist.get(i).getFrequency() == 0){
+	                    if ((starttime >= time.StartTime().getTime()
+	                         && starttime < time.EndTime().getTime())
+	                        ||(endtime > time.StartTime().getTime()
+	                           && endtime <= time.EndTime().getTime())
+	                        ||(starttime <= time.StartTime().getTime()
+	                           && endtime >= time.EndTime().getTime())) {
+	                            selectedAppts[j] = Apptlist.get(i);
+	                            j++;
+	                        }
+	                }
+	                
+	                else if(Apptlist.get(i).getFrequency() == 1){
+	                    long time_dura = 60*60*24*1000;
+	                    while (!(starttime >= time.EndTime().getTime())){
+	                        if ((starttime >= time.StartTime().getTime()
+	                             && starttime < time.EndTime().getTime())
+	                            ||(endtime > time.StartTime().getTime()
+	                               && endtime <= time.EndTime().getTime())
+	                            ||(starttime <= time.StartTime().getTime()
+	                               && endtime >= time.EndTime().getTime())) {
+	                                selectedAppts[j] = Apptlist.get(i);
+	                                j++;
+	                                break;
+	                            }
+	                        endtime += time_dura;
+	                        starttime += time_dura;
+	                    }
+	                }
+	                
+	                else if(Apptlist.get(i).getFrequency() == 2){
+	                    long time_dura = 7*60*60*24*1000;
+	                    while (!(starttime >= time.EndTime().getTime())){
+	                        if ((starttime >= time.StartTime().getTime()
+	                             && starttime < time.EndTime().getTime())
+	                            ||(endtime > time.StartTime().getTime()
+	                               && endtime <= time.EndTime().getTime())
+	                            ||(starttime <= time.StartTime().getTime()
+	                               && endtime >= time.EndTime().getTime())) {
+	                                selectedAppts[j] = Apptlist.get(i);
+	                                j++;
+	                                break;
+	                            }
+	                        endtime += time_dura;
+	                        starttime += time_dura;
+	                    }
+	                }
+	                
+	                else if(Apptlist.get(i).getFrequency() == 3){
+	                    //long time_dura = 60*60*24*1000;
+	                    int[][] m = new int[][]{{31,28,31,30,31,30,31,31,30,31,30,31},
+	                        {31,29,31,30,31,30,31,31,30,31,30,31}};
+	                    int if_leap_year = 0;
+	                    int month = Apptlist.get(i).TimeSpan().StartTime().getMonth();
+	                    int year = Apptlist.get(i).TimeSpan().StartTime().getYear();
+	                    long time_dura;
+	                    while(!(starttime >= time.EndTime().getTime())){
+	                        time_dura = 60*60*24*1000;
+	                        if(((year+1900)%4==0
+	                            &&(year+1900)%100!=0)
+	                           ||(year+1900)%400==0)
+	                            if_leap_year = 1;
+	                        else
+	                            if_leap_year = 0;
+	                        
+	                        if ((starttime >= time.StartTime().getTime() 
+	                             && starttime < time.EndTime().getTime())
+	                            ||(endtime > time.StartTime().getTime()
+	                               && endtime <= time.EndTime().getTime())
+	                            ||(starttime <= time.StartTime().getTime()
+	                               && endtime >= time.EndTime().getTime())) {
+	                                selectedAppts[j] = Apptlist.get(i);
+	                                j++;
+	                                break;
+	                            }
+	                        time_dura = time_dura*m[if_leap_year][month];
+	                        month++;
+	                        if(month > 11){
+	                            month = 0;
+	                            year++;
+	                        }
+	                        endtime += time_dura;
+	                        starttime += time_dura;
+	                    }
+	                }
+	            }
+	            
+	            if (j > 0) {
+	                Appt[] newlist = new Appt[j];
+	                for (int i = 0; i < j; i++) {
+	                    newlist[i] = selectedAppts[i];
+	                }
+	                return newlist;
+	            }
+	        }
+	        return null;
+	        // TODO Auto-generated method stub
+	    }
+	
 	
 	public boolean checkOverlap(User user, Appt appt) {
 		String userID = defaultUser.ID();
@@ -488,7 +598,7 @@ public class ApptStorageNullImpl extends ApptStorage implements Serializable{
 	}
 	
 	public void addUser(User user) {
-		users.put(user.ID(), user);
+		users.put(user.ID(), user);//System.out.println(users.toString());
 	}
 	
 	@Override
@@ -497,9 +607,11 @@ public class ApptStorageNullImpl extends ApptStorage implements Serializable{
 			FileOutputStream fs = new FileOutputStream(filepath);
 			ObjectOutputStream os = new ObjectOutputStream(fs);
 			os.writeObject(this);
+			//os.writeUnshared(this);
 			os.flush();
 			os.close();
 			fs.close();
+			
 			
 			FileInputStream ls = new FileInputStream(filepath);
 			ObjectInputStream ca = new ObjectInputStream(ls);
@@ -512,11 +624,6 @@ public class ApptStorageNullImpl extends ApptStorage implements Serializable{
 			e.printStackTrace();
 		}
 	}
-	
-	public Vector<String> getAllUserIDS(){
-		Vector<String> userIdList = new Vector<String>(this.users.keySet());
-		return userIdList;
-	}
 
 	@Override
 	public void loadFromDisk(String filepath){
@@ -528,7 +635,8 @@ public class ApptStorageNullImpl extends ApptStorage implements Serializable{
 
 			this.mAppts.putAll(A.mAppts);
 			this.users.putAll(A.users);
-		
+			this.locationList.addAll(A.locationList);
+			//System.out.println(this.users.toString());
 			
 			os.close();
 		}catch(FileNotFoundException e){
@@ -536,6 +644,28 @@ public class ApptStorageNullImpl extends ApptStorage implements Serializable{
 		} catch(Exception e){
 			e.printStackTrace();
 		}
+	}
+	
+	public Set<String> getAllUsers() {
+		return users.keySet();
+	}
+	
+	public User getUserView(){
+		return this.userView;
+	}
+	
+	public void setUserView(User user){
+		userView = user;
+	}
+	
+	public Vector<String> getAllUserIDs() {
+		Vector<String> UserIDList = new Vector<String>(this.users.keySet());
+		return UserIDList;
+	}
+	
+	public void deleteUser(String userID){
+		users.remove(userID);
+		mAppts.remove(userID);
 	}
 }
 

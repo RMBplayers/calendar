@@ -48,14 +48,6 @@ class CalCellRenderer extends DefaultTableCellRenderer
 		setHorizontalAlignment(SwingConstants.RIGHT);
 		setVerticalAlignment(SwingConstants.TOP);
 	}
-	
-	public void update(int r,int c){
-		// check wheher the location exits
-		if (light[r][c])
-			setBackground(Color.green);
-		else
-			setBackground(Color.white);
-	}
 
 
 	

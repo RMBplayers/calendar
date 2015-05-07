@@ -225,8 +225,10 @@ public class AppScheduler extends JDialog implements ActionListener,
 		JScrollPane detailScroll = new JScrollPane(detailArea);
 		detailPanel.add(detailScroll);
 
+		
 		JSplitPane pre_pDes = new JSplitPane(JSplitPane.VERTICAL_SPLIT, publicityPanel,
 				titleAndTextPanel);
+		
 		pDes = new JSplitPane(JSplitPane.VERTICAL_SPLIT, pre_pDes,
 				detailPanel);
 
@@ -234,15 +236,14 @@ public class AppScheduler extends JDialog implements ActionListener,
 
 		if (NewAppt != null) {
 			detailArea.setText(NewAppt.getInfo());
-
 		}
 		
 		JPanel panel2 = new JPanel();
 		panel2.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-//		inviteBut = new JButton("Invite");
-//		inviteBut.addActionListener(this);
-//		panel2.add(inviteBut);
+		inviteBut = new JButton("Invite");
+		inviteBut.addActionListener(this);
+		panel2.add(inviteBut);
 		
 		// reminder
 		JPanel reminder = new JPanel();
@@ -308,7 +309,6 @@ public class AppScheduler extends JDialog implements ActionListener,
 			allDisableEdit();
 		}
 		pack();
-
 	}
 	
 	AppScheduler(String title, CalGrid cal, int selectedApptId) {
@@ -340,7 +340,38 @@ public class AppScheduler extends JDialog implements ActionListener,
 				this.setVisible(false);
 				dispose();
 			}
-		} 
+		}else if (e.getSource() == inviteBut) {
+			//check if proper set
+			//if()
+			
+			Appt tempAppt = new Appt();
+			if (publicitySetter.getSelectedItem().toString().equals("PRIVATE")){
+				tempAppt.setPublicity(false);
+			}
+			else{
+				tempAppt.setPublicity(true);
+				//System.out.print("it is true");
+				//
+			}
+			
+			NewAppt.setTitle(titleField.getText());
+			NewAppt.setInfo(detailArea.getText());
+			NewAppt.setLocation(locationField.getSelectedItem().toString());
+			
+			
+			if(frequencyField.getSelectedIndex() == 0)
+				tempAppt.setFrequency(0);
+			else if(frequencyField.getSelectedIndex() == 1)
+				tempAppt.setFrequency(1);
+			else if(frequencyField.getSelectedIndex() == 2)
+				tempAppt.setFrequency(2);
+			else if(frequencyField.getSelectedIndex() == 3)
+				tempAppt.setFrequency(3);
+			
+			InviteDialog ivd = new InviteDialog(parent.controller, tempAppt);//add frequency here
+			ivd.setVisible(true);
+			dispose();
+		}
 		// if click on "yes", then show the time schedule
 		else if ( e.getSource() == reminderRB1 ) {
 			existReminder = true;
@@ -513,7 +544,6 @@ public class AppScheduler extends JDialog implements ActionListener,
 				//System.out.print("it is true");
 				//
 			}
-			
 			// save the reminder to the appt
 			// warning: haven't handle invalid input
 			if (existReminder){
